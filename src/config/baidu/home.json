@@ -1,0 +1,20 @@
+{
+    "project": "ajinga",
+    "driver": "chrome",
+    "steps": [
+        {
+            "operation": "get",
+            "url": "https://www.baidu.com"
+        },
+        {
+            "operation": "input",
+            "data": {
+                "id#kw": "hello"
+            }
+        },
+        {
+            "operation": "click",
+            "target": "id#su"
+        }
+    ]
+}
