@@ -1,8 +1,10 @@
 import os
 import json
 import codecs
-from selenium import webdriver
+# from selenium import webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 from settings import CONFIG_PATH, DATA_PATH, get_driver_path
 from .constant import OPERATION, SELECTOR_SEPARATOR
@@ -76,3 +78,5 @@ class Test():
 
                 if step["operation"] == OPERATION["SWITCH_TO_DEFAULT_CONTENT"]:
                     browser.switch_to_default_content()
+
+        enter = input()

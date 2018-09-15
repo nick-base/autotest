@@ -1,5 +1,5 @@
 {
-    "project": "ajinga",
+    "project": "qq",
     "driver": "chromedriver_linux64/chromedriver",
     "screenshot": "qq",
     "steps": [
