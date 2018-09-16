@@ -1,29 +1,12 @@
 {
-    "project": "ajinga",
+    "project": "ajinga-test",
     "driver": "chromedriver_linux64/chromedriver",
     "screenshot": "ajinga-test",
+    "data": "register_080",
     "steps": [
         {
-            "operation": "get",
-            "url": "https://test.ajinga.com/register/"
-        },
-        {
-            "operation": "input",
-            "data": {
-                "name#first_name": "st",
-                "name#last_name": "081",
-                "name#email_address": "st081@qq.com",
-                "name#mobile": "st081@qq.com",
-                "id#id_password": "123456"
-            }
-        },
-        {
-            "operation": "click",
-            "target": "class#join_button"
-        },
-        {
-            "operation": "screenshot",
-            "filename": "register.png"
+            "operation": "component",
+            "name": "register"
         }
     ]
 }

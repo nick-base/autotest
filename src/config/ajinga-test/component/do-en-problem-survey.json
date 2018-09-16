@@ -1,0 +1,30 @@
+{
+    "steps": [
+        {
+            "operation": "click",
+            "target": "class#next-btn"
+        },
+        {
+            "operation": "click",
+            "target": "class#next-btn"
+        },
+        {
+            "operation": "loop",
+            "times": 12,
+            "steps": [
+                {
+                    "operation": "click",
+                    "target": "xpath#//div[@class='reya-image-box'][1]"
+                },
+                {
+                    "operation": "click",
+                    "target": "class#next-btn"
+                },
+                {
+                    "operation": "sleep",
+                    "time": 1
+                }
+            ]
+        }
+    ]
+}

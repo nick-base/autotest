@@ -1,6 +1,7 @@
 import os
 import json
 import codecs
+import time
 # from selenium import webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -96,9 +97,17 @@ class Test():
 
                 if step["operation"] == OPERATION["COMPONENT"]:
                     component = self.load_component(step["name"])
-
                     if "steps" in component:
                         self.run_steps(component["steps"])
+
+                if step["operation"] == OPERATION["LOOP"]:
+                    loop_steps = step["steps"]
+                    loop_times = int(step["times"])
+                    for loop in range(loop_times):
+                        self.run_steps(loop_steps)
+
+                if step["operation"] == OPERATION["SLEEP"]:
+                    time.sleep(int(step["time"]))
 
     def run(self):
         self.browser = self.get_browser(self.config["driver"])

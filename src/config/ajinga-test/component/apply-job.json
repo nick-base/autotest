@@ -1,0 +1,12 @@
+{
+    "steps": [
+        {
+            "operation": "get",
+            "url": "https://test.ajinga.com/job-detail-new/32557/c/"
+        },
+        {
+            "operation": "click",
+            "target": "id#js-apply-job-btn"
+        }
+    ]
+}

@@ -9,6 +9,8 @@ OPERATION = {
     "SWITCH_TO_DEFAULT_CONTENT": "content",
 
     "COMPONENT": "component",
+    "LOOP": "loop",
+    "SLEEP": "sleep",
 }
 
 SELECTOR_SEPARATOR = '#'

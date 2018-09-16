@@ -16,8 +16,12 @@ def test_ajinga():
     t = Test('ajinga-test/register.json')
     t.run()
 
+def test_ajinga_survey():
+    t = Test('ajinga-test/survey.json')
+    t.run()
+
 # test_baidu()
 # test_qq()
 # test_ajinga()
-
-test_qq_v2()
+# test_qq_v2()
+test_ajinga_survey()
