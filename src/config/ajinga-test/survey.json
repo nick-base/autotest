@@ -1,0 +1,11 @@
+{
+    "project": "ajinga-test",
+    "driver": "chromedriver_linux64/chromedriver",
+    "screenshot": "ajinga-test",
+    "steps": [
+        {
+            "operation": "component",
+            "name": "register"
+        }
+    ]
+}

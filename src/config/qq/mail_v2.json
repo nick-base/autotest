@@ -1,0 +1,12 @@
+{
+    "project": "qq",
+    "driver": "chromedriver_linux64/chromedriver",
+    "screenshot": "qq",
+    "data": "mail_v2",
+    "steps": [
+        {
+            "operation": "component",
+            "name": "login"
+        }
+    ]
+}

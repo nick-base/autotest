@@ -1,7 +1,4 @@
 {
-    "project": "ajinga",
-    "driver": "chromedriver_linux64/chromedriver",
-    "screenshot": "ajinga-test",
     "steps": [
         {
             "operation": "get",
