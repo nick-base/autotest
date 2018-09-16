@@ -17,6 +17,10 @@
                     "target": "xpath#//div[@class='reya-image-box'][1]"
                 },
                 {
+                    "operation": "screenshot",
+                    "filename": "#loop_counter#.png"
+                },
+                {
                     "operation": "click",
                     "target": "class#next-btn"
                 },

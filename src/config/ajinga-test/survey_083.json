@@ -1,0 +1,20 @@
+{
+    "project": "ajinga-test",
+    "driver": "chromedriver_linux64/chromedriver",
+    "screenshot": "ajinga-test/survey",
+    "data": "survey_083",
+    "steps": [
+        {
+            "operation": "component",
+            "name": "login"
+        },
+        {
+            "operation": "component",
+            "name": "apply-job"
+        },
+        {
+            "operation": "component",
+            "name": "do-en-problem-survey"
+        }
+    ]
+}

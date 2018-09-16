@@ -86,7 +86,10 @@ class Test():
                     data_path = os.path.join(OUTPUT_PATH, self.config["screenshot"])
                     if  not os.path.exists(data_path):
                         os.makedirs(data_path)
-                    file_name = os.path.join(data_path, step["filename"])
+                    if "#loop_counter#" in step["filename"]:
+                        file_name = step["filename"].replace("#loop_counter#", str(step["loop_counter"]))
+
+                    file_name = os.path.join(data_path, file_name)
                     self.browser.save_screenshot(file_name)
 
                 if step["operation"] == OPERATION["SWITCH_TO_FRAME"]:
@@ -103,7 +106,12 @@ class Test():
                 if step["operation"] == OPERATION["LOOP"]:
                     loop_steps = step["steps"]
                     loop_times = int(step["times"])
+
+
                     for loop in range(loop_times):
+                        for step in loop_steps:
+                            print(loop)
+                            step["loop_counter"] = loop
                         self.run_steps(loop_steps)
 
                 if step["operation"] == OPERATION["SLEEP"]:
