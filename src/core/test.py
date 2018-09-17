@@ -109,7 +109,6 @@ class Test():
                     loop_steps = step["steps"]
                     loop_times = int(step["times"])
 
-
                     for loop in range(loop_times):
                         for step in loop_steps:
                             step["loop_counter"] = loop
