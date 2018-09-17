@@ -17,7 +17,7 @@ def test_ajinga():
     t.run()
 
 def test_ajinga_survey():
-    t = Test('ajinga-test/survey_083.json')
+    t = Test('ajinga-test/survey.json')
     t.run()
 
 # test_baidu()

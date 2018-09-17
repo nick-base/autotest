@@ -5,12 +5,20 @@
             "target": "class#next-btn"
         },
         {
+            "operation": "screenshot",
+            "filename": "0.png"
+        },
+        {
             "operation": "click",
             "target": "class#next-btn"
         },
         {
+            "operation": "screenshot",
+            "filename": "1.png"
+        },
+        {
             "operation": "loop",
-            "times": 12,
+            "times": 13,
             "steps": [
                 {
                     "operation": "click",
@@ -18,7 +26,51 @@
                 },
                 {
                     "operation": "screenshot",
-                    "filename": "#loop_counter#.png"
+                    "filename": "part1-#loop_counter#.png"
+                },
+                {
+                    "operation": "click",
+                    "target": "class#next-btn"
+                },
+                {
+                    "operation": "sleep",
+                    "time": 1
+                }
+            ]
+        },
+        {
+            "operation": "loop",
+            "times": 13,
+            "steps": [
+                {
+                    "operation": "click",
+                    "target": "xpath#//div[@class='reya-image-box'][1]"
+                },
+                {
+                    "operation": "screenshot",
+                    "filename": "part2-#loop_counter#.png"
+                },
+                {
+                    "operation": "click",
+                    "target": "class#next-btn"
+                },
+                {
+                    "operation": "sleep",
+                    "time": 1
+                }
+            ]
+        },
+        {
+            "operation": "loop",
+            "times": 13,
+            "steps": [
+                {
+                    "operation": "click",
+                    "target": "xpath#//div[@class='reya-image-box'][1]"
+                },
+                {
+                    "operation": "screenshot",
+                    "filename": "part3-#loop_counter#.png"
                 },
                 {
                     "operation": "click",

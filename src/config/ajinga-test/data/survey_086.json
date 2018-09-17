@@ -1,0 +1,13 @@
+{
+    "login_data": {
+        "id#id_email_mobile": "st0086@qq.com",
+        "id#id_password": "123456"
+    },
+    "register_data": {
+        "name#first_name": "st",
+        "name#last_name": "0086",
+        "name#email_address": "st0086@qq.com",
+        "name#mobile": "st0086@qq.com",
+        "id#id_password": "123456"
+    }
+}

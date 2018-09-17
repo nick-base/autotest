@@ -88,6 +88,8 @@ class Test():
                         os.makedirs(data_path)
                     if "#loop_counter#" in step["filename"]:
                         file_name = step["filename"].replace("#loop_counter#", str(step["loop_counter"]))
+                    else:
+                        file_name = step["filename"]
 
                     file_name = os.path.join(data_path, file_name)
                     self.browser.save_screenshot(file_name)
@@ -110,7 +112,6 @@ class Test():
 
                     for loop in range(loop_times):
                         for step in loop_steps:
-                            print(loop)
                             step["loop_counter"] = loop
                         self.run_steps(loop_steps)
 
