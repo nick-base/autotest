@@ -2,20 +2,22 @@
     "steps": [
         {
             "operation": "click",
-            "target": "class#next-btn"
+            "target": "xpath#//div[@class='reya-image-box'][1]"
         },
         {
             "operation": "screenshot",
-            "filename": "0.png"
+            "filename": "lang.png"
         },
+
         {
             "operation": "click",
             "target": "class#next-btn"
         },
         {
             "operation": "screenshot",
-            "filename": "1.png"
+            "filename": "0.png"
         },
+
         {
             "operation": "loop",
             "times": 13,

@@ -1,8 +1,8 @@
 {
     "project": "ajinga-test",
     "driver": "chromedriver_linux64/chromedriver",
-    "screenshot": "ajinga-test/survey",
-    "data": "survey_086",
+    "screenshot": "ajinga-test/survey_087",
+    "data": "survey_089",
     "steps": [
         {
             "operation": "component",
