@@ -12,6 +12,7 @@ OPERATION = {
     "COMPONENT": "component",
     "LOOP": "loop",
     "SLEEP": "sleep",
+    "STOP": "stop"
 }
 
 SELECTOR_SEPARATOR = '#'

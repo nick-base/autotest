@@ -22,7 +22,7 @@ class Test():
             try:
                 config = json.load(f)
             except Exception as e:
-                print(e)
+                (e)
         return config
 
     def load_config(self, config_filename):
@@ -71,14 +71,18 @@ class Test():
 
     def fill_data(self, data):
         for key in data:
-            elem = self.get_elem(key)
-            elem.send_keys(data[key])
+            if SELECTOR_SEPARATOR in key:
+                elem = self.get_elem(key)
+                elem.send_keys(data[key])
 
     def run_steps(self, steps):
         if steps:
             for step in steps:
                 if step["operation"] == OPERATION["GET"]:
-                    self.browser.get(step["url"])
+                    if "url" in step:
+                        self.browser.get(step["url"])
+                    elif "#data" in step:
+                        self.browser.get(self.data[step["#data"]]["url"])
 
                 if step["operation"] == OPERATION["INPUT"]:
                     if "data" in step:
@@ -88,7 +92,10 @@ class Test():
 
                 if step["operation"] == OPERATION["CLICK"]:
                     try:
-                        self.get_elem(step['target']).click()
+                        if "target" in step:
+                            self.get_elem(step["target"]).click()
+                        elif "#data" in step:
+                            self.get_elem(self.data[step["#data"]]["target"]).click()
                     except Exception as e:
                         print(e)
 
@@ -127,6 +134,9 @@ class Test():
                 if step["operation"] == OPERATION["SLEEP"]:
                     time.sleep(int(step["time"]))
 
+                if step["operation"] == OPERATION["STOP"]:
+                    break
+
                 if step["operation"] == OPERATION["SCRIPT"]:
                     self.browser.execute_script(self.get_script(step["script"]))
 
@@ -135,5 +145,5 @@ class Test():
         self.data = self.load_data(self.config["data"])
         self.run_steps(self.config["steps"])
 
-        print("Enter...")
+        ("Enter...")
         enter = input()

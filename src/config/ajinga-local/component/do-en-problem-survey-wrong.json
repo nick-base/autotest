@@ -2,7 +2,10 @@
     "steps": [
         {
             "operation": "click",
-            "target": "xpath#//div[@class='reya-image-box'][2]"
+            "#data": "do_en_problem_survey"
+        },
+        {
+            "operation": "stop"
         },
         {
             "operation": "loop",
@@ -14,7 +17,7 @@
                 },
                 {
                     "operation": "script",
-                    "script": "survey-wrong.js"
+                    "script": "survey.js"
                 },
                 {
                     "operation": "screenshot",

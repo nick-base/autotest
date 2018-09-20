@@ -2,7 +2,7 @@
     "steps": [
         {
             "operation": "click",
-            "target": "xpath#//div[@class='reya-image-box'][2]"
+            "#data": "do_en_problem_survey"
         },
         {
             "operation": "loop",
