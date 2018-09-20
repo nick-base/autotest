@@ -9,6 +9,7 @@ OUTPUT_PATH = os.path.join(PROJECT_ROOT, "output")
 
 COMPONENT_FILENAME = "component"
 DATA_FILENAME = "data"
+SCRIPT_FILENAME = "script"
 
 def get_driver_path(path):
     return os.path.join(DRIVER_PATH, path)

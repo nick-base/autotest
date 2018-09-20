@@ -22,6 +22,6 @@ def test_ajinga_survey():
 
 # test_baidu()
 # test_qq()
-# test_ajinga()
+test_ajinga()
 # test_qq_v2()
-test_ajinga_survey()
+# test_ajinga_survey()

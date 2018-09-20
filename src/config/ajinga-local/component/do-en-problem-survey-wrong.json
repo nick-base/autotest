@@ -1,0 +1,30 @@
+{
+    "steps": [
+        {
+            "operation": "click",
+            "target": "xpath#//div[@class='reya-image-box'][2]"
+        },
+        {
+            "operation": "loop",
+            "times": 39,
+            "steps": [
+                {
+                    "operation": "sleep",
+                    "time": 1
+                },
+                {
+                    "operation": "script",
+                    "script": "survey-wrong.js"
+                },
+                {
+                    "operation": "screenshot",
+                    "filename": "part1-#loop_counter#.png"
+                },
+                {
+                    "operation": "click",
+                    "target": "class#next-btn"
+                }
+            ]
+        }
+    ]
+}

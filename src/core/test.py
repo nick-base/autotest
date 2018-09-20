@@ -8,7 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 from .constant import OPERATION, SELECTOR_SEPARATOR
-from settings import CONFIG_PATH, OUTPUT_PATH, COMPONENT_FILENAME, DATA_FILENAME
+from settings import CONFIG_PATH, OUTPUT_PATH, COMPONENT_FILENAME, DATA_FILENAME,\
+    SCRIPT_FILENAME
 from settings import get_driver_path
 
 class Test():
@@ -37,6 +38,12 @@ class Test():
     def load_data(self, name):
         path = os.path.join(self.config_path, DATA_FILENAME, "%s%s" % (name, '.json'))
         return self.load_file(path)
+
+    def get_script(self, name):
+        path = os.path.join(self.config_path, SCRIPT_FILENAME, name)
+        with open(path) as f:
+            script = f.read().strip('\n')
+        return script
 
     def get_browser(self, name):
         # TODO
@@ -80,7 +87,10 @@ class Test():
                         self.fill_data(self.data[step["#data"]])
 
                 if step["operation"] == OPERATION["CLICK"]:
-                    self.get_elem(step['target']).click()
+                    try:
+                        self.get_elem(step['target']).click()
+                    except Exception as e:
+                        print(e)
 
                 if step["operation"] == OPERATION["SCREENSHOT"]:
                     data_path = os.path.join(OUTPUT_PATH, self.config["screenshot"])
@@ -116,6 +126,9 @@ class Test():
 
                 if step["operation"] == OPERATION["SLEEP"]:
                     time.sleep(int(step["time"]))
+
+                if step["operation"] == OPERATION["SCRIPT"]:
+                    self.browser.execute_script(self.get_script(step["script"]))
 
     def run(self):
         self.browser = self.get_browser(self.config["driver"])

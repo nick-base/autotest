@@ -2,11 +2,15 @@
     "project": "ajinga-test",
     "driver": "chromedriver_linux64/chromedriver",
     "screenshot": "ajinga-test",
-    "data": "survey_082",
+    "data": "survey_097",
     "steps": [
         {
             "operation": "component",
-            "name": "register"
+            "name": "login"
+        },
+        {
+            "operation": "component",
+            "name": "apply-job"
         }
     ]
 }

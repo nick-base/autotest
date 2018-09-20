@@ -1,0 +1,16 @@
+{
+    "steps": [
+        {
+            "operation": "get",
+            "url": "http://192.168.244.61:8000/login/"
+        },
+        {
+            "operation": "input",
+            "#data": "login_data"
+        },
+        {
+            "operation": "click",
+            "target": "class#loginSubmitBtn"
+        }
+    ]
+}
