@@ -1,0 +1,21 @@
+{
+    "register_data": {
+        "url": "https://test.ajinga.com/register/",
+        "name#first_name": "st",
+        "name#last_name": "0303",
+        "name#email_address": "st0303@qq.com",
+        "name#mobile": "st0303@qq.com",
+        "id#id_password": "123456"
+    },
+    "login_data": {
+        "url": "https://test.ajinga.com/login/",
+        "id#id_email_mobile": "st0303@qq.com",
+        "id#id_password": "123456"
+    },
+    "apply_job": {
+        "url": "https://test.ajinga.com/job-detail-new/32557/c/"
+    },
+    "do_problem_survey": {
+        "target": "xpath#//div[@class='reya-image-box'][2]"
+    }
+}

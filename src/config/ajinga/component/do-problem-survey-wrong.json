@@ -2,7 +2,7 @@
     "steps": [
         {
             "operation": "click",
-            "#data": "do_en_problem_survey"
+            "#data": "do_problem_survey"
         },
         {
             "operation": "loop",
@@ -14,7 +14,7 @@
                 },
                 {
                     "operation": "script",
-                    "script": "survey.js"
+                    "script": "survey-wrong.js"
                 },
                 {
                     "operation": "screenshot",

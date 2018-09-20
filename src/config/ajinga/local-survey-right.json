@@ -1,8 +1,8 @@
 {
-    "project": "ajinga-test",
+    "project": "ajinga-local",
     "driver": "chromedriver_linux64/chromedriver",
     "screenshot": "ajinga-test/survey_087",
-    "data": "local_survey_data",
+    "data": "local-survey-data",
     "steps": [
         {
             "operation": "component",
@@ -14,7 +14,7 @@
         },
         {
             "operation": "component",
-            "name": "do-en-problem-survey-right"
+            "name": "do-problem-survey-right"
         }
     ]
 }

@@ -145,5 +145,5 @@ class Test():
         self.data = self.load_data(self.config["data"])
         self.run_steps(self.config["steps"])
 
-        ("Enter...")
+        print("Press enter to exit...")
         enter = input()
