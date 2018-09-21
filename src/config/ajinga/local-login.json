@@ -1,7 +1,7 @@
 {
     "project": "ajinga-local",
     "driver": "chromedriver_linux64/chromedriver",
-    "screenshot": "ajinga-local",
+    "screenshot": "ajinga-local/login",
     "data": "local-survey-data",
     "steps": [
         {

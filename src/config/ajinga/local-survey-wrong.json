@@ -1,12 +1,12 @@
 {
     "project": "ajinga-local",
     "driver": "chromedriver_linux64/chromedriver",
-    "screenshot": "ajinga-test/survey_087",
+    "screenshot": "ajinga-local/survey-w",
     "data": "local-survey-data",
     "steps": [
         {
             "operation": "component",
-            "name": "register"
+            "name": "login"
         },
         {
             "operation": "component",
