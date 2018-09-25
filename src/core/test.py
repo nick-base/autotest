@@ -48,7 +48,7 @@ class Test():
     def get_browser(self, name):
         # TODO
         # browser = webdriver.Chrome(executable_path = get_driver_path(self.config['driver']))
-        browser = WebDriver(executable_path = get_driver_path(self.config['driver']))
+        browser = WebDriver(executable_path = get_driver_path(self.config['driver_path']))
 
         browser.maximize_window()
         return browser
@@ -141,7 +141,7 @@ class Test():
                     self.browser.execute_script(self.get_script(step["script"]))
 
     def run(self):
-        self.browser = self.get_browser(self.config["driver"])
+        self.browser = self.get_browser(self.config["driver_path"])
         self.data = self.load_data(self.config["data"])
         self.run_steps(self.config["steps"])
 

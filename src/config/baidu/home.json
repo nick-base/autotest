@@ -1,6 +1,7 @@
 {
     "project": "baidu",
-    "driver": "chromedriver_linux64/chromedriver",
+    "driver_path": "operadriver_linux64/operadriver",
+    "driver": "opera",
     "steps": [
         {
             "operation": "get",
