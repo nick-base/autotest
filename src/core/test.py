@@ -3,7 +3,6 @@ import json
 import codecs
 import time
 # from selenium import webdriver
-from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 
 
@@ -47,7 +46,10 @@ class Test():
 
     def get_browser(self, name):
         # TODO
-        # browser = webdriver.Chrome(executable_path = get_driver_path(self.config['driver']))
+        if "driver" not in self.config or self.config["driver"].lower() == "chrome":
+            from selenium.webdriver.chrome.webdriver import WebDriver
+        elif self.config["driver"].lower() == "firefox":
+            from selenium.webdriver.firefox.webdriver import WebDriver
         browser = WebDriver(executable_path = get_driver_path(self.config['driver_path']))
 
         browser.maximize_window()
@@ -133,6 +135,7 @@ class Test():
 
                 if step["operation"] == OPERATION["SLEEP"]:
                     time.sleep(int(step["time"]))
+                    # self.browser.implicitly_wait(int(step["time"]))
 
                 if step["operation"] == OPERATION["STOP"]:
                     break

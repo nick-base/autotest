@@ -11,6 +11,10 @@
         {
             "operation": "click",
             "target": "class#loginSubmitBtn"
+        },
+        {
+            "operation": "click",
+            "target": "class#close-icon"
         }
     ]
 }

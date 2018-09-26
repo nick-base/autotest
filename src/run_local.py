@@ -5,11 +5,7 @@ def register():
     t.run()
 
 def login():
-    t = Test('ajinga/local-init.json')
-    t.run()
-
-def survey():
-    t = Test('ajinga/local-survey.json')
+    t = Test('ajinga/local-login.json')
     t.run()
 
 def survey_right():
@@ -20,3 +16,4 @@ def survey_wrong():
     t = Test('ajinga/local-survey-wrong.json')
     t.run()
 
+login()

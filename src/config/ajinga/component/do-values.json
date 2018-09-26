@@ -1,0 +1,24 @@
+{
+    "steps": [
+        {
+            "operation": "get",
+            "url": "https://stage.ajinga.com/candidate-dashboard/"
+        },
+        {
+            "operation": "click",
+            "target": "class#nav-do_fintness"
+        },
+        {
+            "operation": "click",
+            "target": "class#next-btn"
+        },
+        {
+            "operation": "sleep",
+            "time": "15"
+        },
+        {
+            "operation": "click",
+            "target": "class#start"
+        }
+    ]
+}
