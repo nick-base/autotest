@@ -2,56 +2,83 @@ import os
 import json
 import codecs
 import time
-# from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
+from settings import PROJECT_ROOT
+from core.utils import load_json_file
 
-from .constant import OPERATION, SELECTOR_SEPARATOR
-from settings import CONFIG_PATH, OUTPUT_PATH, COMPONENT_FILENAME, DATA_FILENAME,\
-    SCRIPT_FILENAME
-from settings import get_driver_path
+CONFIG_PATH = os.path.join(PROJECT_ROOT, "config")
+DRIVER_PATH = os.path.join(PROJECT_ROOT, "drivers")
+OUTPUT_PATH = os.path.join(PROJECT_ROOT, "output")
+
+COMPONENT_FILENAME = ["component", "plugs", "c", "p"]
+DATA_FILENAME = ["data", "d"]
+SCRIPT_FILENAME = ["script", "s"]
+EXTENSION_NAME = ".json"
+
+def get_driver_path(path):
+    return os.path.join(DRIVER_PATH, path)
+
+OPERATION = {
+    "GET": "get",
+    "INPUT": "input",
+    "CLICK": "click",
+
+    "SCREENSHOT": "screenshot",
+    "SCRIPT": "script",
+
+    "SWITCH_TO_FRAME": "frame",
+    "SWITCH_TO_DEFAULT_CONTENT": "content",
+
+    "COMPONENT": "component",
+    "LOOP": "loop",
+    "SLEEP": "sleep",
+    "STOP": "stop"
+}
+
+SELECTOR_SEPARATOR = '#'
 
 class Test():
     def __init__(self, config_filename):
-        self.load_config(config_filename)
-
-    def load_file(self, filename):
-        config = {}
-        with codecs.open(filename, encoding='utf-8') as f:
-            try:
-                config = json.load(f)
-            except Exception as e:
-                (e)
-        return config
-
-    def load_config(self, config_filename):
         config_file = os.path.join(CONFIG_PATH, config_filename)
         self.config_path = os.path.abspath(os.path.dirname(config_file))
+        self.config = load_json_file(config_file)
 
-        self.config = self.load_file(config_file)
+    def get_config(self, key):
+        if key and key in self.config:
+            return self.config[key]
+        return None
 
     def load_component(self, name):
-        path = os.path.join(self.config_path, COMPONENT_FILENAME, "%s%s" % (name, '.json'))
-        return self.load_file(path)
+        for com in COMPONENT_FILENAME:
+            path = os.path.join(self.config_path, com, "%s%s" % (name, EXTENSION_NAME))
+            if os.path.isfile(path):
+                return load_json_file(path)
+        return {}
 
     def load_data(self, name):
-        path = os.path.join(self.config_path, DATA_FILENAME, "%s%s" % (name, '.json'))
-        return self.load_file(path)
+        for d in DATA_FILENAME:
+            path = os.path.join(self.config_path, d, "%s%s" % (name, EXTENSION_NAME))
+            if os.path.isfile(path):
+                return load_json_file(path)
+        return {}
 
     def get_script(self, name):
-        path = os.path.join(self.config_path, SCRIPT_FILENAME, name)
-        with open(path) as f:
-            script = f.read().strip('\n')
-        return script
+        for s in SCRIPT_FILENAME:
+            if os.path.isfile(s):
+                path = os.path.join(self.config_path, s, name)
+                with open(path) as f:
+                    script = f.read().strip('\n')
+                return script
+        return ""
 
     def get_browser(self, name):
-        # TODO
-        if "driver" not in self.config or self.config["driver"].lower() == "chrome":
+        driver = self.get_config('driver') and self.get_config('driver').lower() or "chrome"
+        if driver == "chrome":
             from selenium.webdriver.chrome.webdriver import WebDriver
-        elif self.config["driver"].lower() == "firefox":
+        elif driver == "firefox":
             from selenium.webdriver.firefox.webdriver import WebDriver
-        browser = WebDriver(executable_path = get_driver_path(self.config['driver_path']))
-
+        browser = WebDriver(executable_path = get_driver_path(self.get_config('driver_path')))
         browser.maximize_window()
         return browser
 

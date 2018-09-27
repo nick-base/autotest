@@ -1,4 +1,4 @@
-## autotest 自动化测试程序。
+## autotest 自动化测试程序 version 1.0
 
 #### 一个简单的案例
 
