@@ -6,7 +6,7 @@
         },
         {
             "operation": "frame",
-            "target": "id#login_frame"
+            "frame": "id#login_frame"
         },
         {
             "operation": "input",

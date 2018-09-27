@@ -1,20 +1,16 @@
 {
     "steps": [
         {
-            "operation": "get",
-            "#data": "register_data"
+            "get": "#register_url"
         },
         {
-            "operation": "input",
-            "#data": "register_data"
+            "input": "#register_data"
         },
         {
-            "operation": "click",
-            "target": "class#join_button"
+            "click": "class#join_button"
         },
         {
-            "operation": "screenshot",
-            "filename": "register.png"
+            "screenshot": "register.png"
         }
     ]
 }

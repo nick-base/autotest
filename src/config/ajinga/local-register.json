@@ -5,12 +5,10 @@
     "data": "local-survey-data",
     "steps": [
         {
-            "operation": "component",
-            "name": "register"
+            "c": "register"
         },
         {
-            "operation": "component",
-            "name": "apply-job"
+            "c": "apply-job"
         }
     ]
 }

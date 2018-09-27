@@ -1,14 +1,14 @@
 {
     "register_data": {
-        "url": "http://192.168.244.61:8000/register/",
         "name#first_name": "st",
-        "name#last_name": "0308",
-        "name#email_address": "st0308@qq.com",
-        "name#mobile": "st0308@qq.com",
+        "name#last_name": "0309",
+        "name#email_address": "st0309@qq.com",
+        "name#mobile": "st0309@qq.com",
         "id#id_password": "123456"
     },
+    "register_url": "http://192.168.244.61:8000/register/",
     "login_data": {
-        "id#id_email_mobile": "st0308@qq.com",
+        "id#id_email_mobile": "st0309@qq.com",
         "id#id_password": "123456"
     },
     "login_url": "http://192.168.244.61:8000/login/",

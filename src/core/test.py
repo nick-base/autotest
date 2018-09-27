@@ -31,7 +31,7 @@ OPERATION = {
     "SWITCH_TO_FRAME": "frame",
     "SWITCH_TO_DEFAULT_CONTENT": "content",
 
-    "COMPONENT": "component",
+    "COMPONENT": ["component", "c", "plugs", "p"],
     "LOOP": "loop",
     "SLEEP": "sleep",
     "STOP": "stop",
@@ -199,6 +199,15 @@ class Test():
         path = os.path.join(data_path, file_name)
         self.browser.save_screenshot(path)
 
+    def do_component(self, step, is_standard):
+        if is_standard:
+            component = self.load_component(step["name"])
+        else:
+            key = list(step.keys())[0]
+            component = self.load_component(step[key])
+        if "steps" in component:
+            self.run_steps(component["steps"])
+
     def run_steps(self, steps):
         if steps:
             for step in steps:
@@ -216,20 +225,7 @@ class Test():
                 elif operation == OPERATION["SCREENSHOT"]:
                     self.do_screenshot(step, is_standard)
 
-                elif operation == OPERATION["SCRIPT"]:
-                    self.browser.execute_script(self.get_script(step["script"]))
-
-                elif operation == OPERATION["SWITCH_TO_FRAME"]:
-                    self.browser.switch_to_frame(self.get_elem(step['target']))
-
-                elif operation == OPERATION["SWITCH_TO_DEFAULT_CONTENT"]:
-                    self.browser.switch_to_default_content()
-
-                elif operation == OPERATION["COMPONENT"]:
-                    component = self.load_component(step["name"])
-                    if "steps" in component:
-                        self.run_steps(component["steps"])
-
+                # standard is same with simple
                 elif operation == OPERATION["LOOP"]:
                     loop_steps = step["steps"]
                     loop_times = int(step["times"])
@@ -237,9 +233,22 @@ class Test():
                         for step in loop_steps:
                             step["loop_counter"] = loop
                         self.run_steps(loop_steps)
+
+                elif operation == OPERATION["SCRIPT"]:
+                    self.browser.execute_script(self.get_script(step["script"]))
+
+                elif operation == OPERATION["SWITCH_TO_FRAME"]:
+                    self.browser.switch_to_frame(self.get_elem(step['frame']))
+
+                elif operation == OPERATION["SWITCH_TO_DEFAULT_CONTENT"]:
+                    self.browser.switch_to_default_content()
+
+                elif operation in OPERATION["COMPONENT"]:
+                    self.do_component(step, is_standard)
+
                 elif operation == OPERATION["SLEEP"]:
                     time.sleep(int(step["time"]))
-                    # self.browser.implicitly_wait(int(step["time"]))
+
                 elif operation == OPERATION["STOP"]:
                     break
 
