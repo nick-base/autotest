@@ -20,6 +20,7 @@ def get_driver_path(path):
     return os.path.join(DRIVER_PATH, path)
 
 OPERATION = {
+    "OPERATION": ["operation", "op", "do"],
     "GET": "get",
     "INPUT": "input",
     "CLICK": "click",
@@ -33,9 +34,8 @@ OPERATION = {
     "COMPONENT": "component",
     "LOOP": "loop",
     "SLEEP": "sleep",
-    "STOP": "stop"
+    "STOP": "stop",
 }
-
 SELECTOR_SEPARATOR = '#'
 
 class Test():
@@ -104,22 +104,56 @@ class Test():
                 elem = self.get_elem(key)
                 elem.send_keys(data[key])
 
+    def get_operation_type(self, step):
+        is_standard = True
+        for op in OPERATION["OPERATION"]:
+            if op in step:
+                operation = step[op]
+                return operation, is_standard
+        keys = list(step.keys())
+        if keys:
+            return keys[0], not is_standard
+        return None, None
+
+    def do_get(self, step, is_standard=False):
+        def get_url(variable_name):
+            if variable_name not in self.data:
+                return ""
+            url_data = self.data[variable_name]
+            if type(url_data) == str:
+                url = url_data
+            elif "url" in url_data:
+                url = url_data["url"]
+            return url
+
+        url = ""
+        if is_standard:
+            if "url" in step:
+                url = step["url"]
+            elif "#data" in step:
+                url = get_url(step["#data"])
+        else:
+            if not step["get"].startswith("#"):
+                url = step["get"]
+            else:
+                url = get_url(step["get"][1::])
+        self.browser.get(url)
+
     def run_steps(self, steps):
         if steps:
             for step in steps:
-                if step["operation"] == OPERATION["GET"]:
-                    if "url" in step:
-                        self.browser.get(step["url"])
-                    elif "#data" in step:
-                        self.browser.get(self.data[step["#data"]]["url"])
+                operation, is_standard = self.get_operation_type(step)
 
-                if step["operation"] == OPERATION["INPUT"]:
+                if operation == OPERATION["GET"]:
+                    self.do_get(step, is_standard)
+
+                elif operation == OPERATION["INPUT"]:
                     if "data" in step:
                         self.fill_data(step["data"])
                     if "#data" in step:
                         self.fill_data(self.data[step["#data"]])
 
-                if step["operation"] == OPERATION["CLICK"]:
+                elif operation == OPERATION["CLICK"]:
                     try:
                         if "target" in step:
                             self.get_elem(step["target"]).click()
@@ -128,7 +162,7 @@ class Test():
                     except Exception as e:
                         print(e)
 
-                if step["operation"] == OPERATION["SCREENSHOT"]:
+                elif operation == OPERATION["SCREENSHOT"]:
                     data_path = os.path.join(OUTPUT_PATH, self.config["screenshot"])
                     if  not os.path.exists(data_path):
                         os.makedirs(data_path)
@@ -140,18 +174,18 @@ class Test():
                     file_name = os.path.join(data_path, file_name)
                     self.browser.save_screenshot(file_name)
 
-                if step["operation"] == OPERATION["SWITCH_TO_FRAME"]:
+                elif operation == OPERATION["SWITCH_TO_FRAME"]:
                     self.browser.switch_to_frame(self.get_elem(step['target']))
 
-                if step["operation"] == OPERATION["SWITCH_TO_DEFAULT_CONTENT"]:
+                elif operation == OPERATION["SWITCH_TO_DEFAULT_CONTENT"]:
                     self.browser.switch_to_default_content()
 
-                if step["operation"] == OPERATION["COMPONENT"]:
+                elif operation == OPERATION["COMPONENT"]:
                     component = self.load_component(step["name"])
                     if "steps" in component:
                         self.run_steps(component["steps"])
 
-                if step["operation"] == OPERATION["LOOP"]:
+                elif operation == OPERATION["LOOP"]:
                     loop_steps = step["steps"]
                     loop_times = int(step["times"])
 
@@ -160,20 +194,20 @@ class Test():
                             step["loop_counter"] = loop
                         self.run_steps(loop_steps)
 
-                if step["operation"] == OPERATION["SLEEP"]:
+                elif operation == OPERATION["SLEEP"]:
                     time.sleep(int(step["time"]))
                     # self.browser.implicitly_wait(int(step["time"]))
 
-                if step["operation"] == OPERATION["STOP"]:
+                elif operation == OPERATION["STOP"]:
                     break
 
-                if step["operation"] == OPERATION["SCRIPT"]:
+                elif operation == OPERATION["SCRIPT"]:
                     self.browser.execute_script(self.get_script(step["script"]))
 
     def run(self):
-        self.browser = self.get_browser(self.config["driver_path"])
-        self.data = self.load_data(self.config["data"])
-        self.run_steps(self.config["steps"])
+        self.browser = self.get_browser(self.get_config("driver_path"))
+        self.data = self.load_data(self.get_config("data"))
+        self.run_steps(self.get_config("steps"))
 
         print("Press enter to exit...")
         enter = input()

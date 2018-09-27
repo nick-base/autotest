@@ -2,16 +2,16 @@
     "register_data": {
         "url": "http://192.168.244.61:8000/register/",
         "name#first_name": "st",
-        "name#last_name": "0305",
-        "name#email_address": "st0305@qq.com",
-        "name#mobile": "st0305@qq.com",
+        "name#last_name": "0308",
+        "name#email_address": "st0308@qq.com",
+        "name#mobile": "st0308@qq.com",
         "id#id_password": "123456"
     },
     "login_data": {
-        "url": "http://192.168.244.61:8000/login/",
-        "id#id_email_mobile": "st0305@qq.com",
+        "id#id_email_mobile": "st0308@qq.com",
         "id#id_password": "123456"
     },
+    "login_url": "http://192.168.244.61:8000/login/",
     "apply_job": {
         "url": "http://192.168.244.61:8000/job-detail-new/14629/c/"
     },

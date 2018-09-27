@@ -1,8 +1,7 @@
 {
     "steps": [
         {
-            "operation": "get",
-            "#data": "login_data"
+            "get": "#login_url"
         },
         {
             "operation": "input",

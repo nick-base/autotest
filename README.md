@@ -46,13 +46,26 @@
  -- test-config.json
 ```
 #### 实例
-```JavaScript
+```
+// standard
+{
+    "operation": "get",
+    "#data": "login_url"
+},
+
+// simplify
+{
+    "get": "#login_url",
+},
+```
+
+```js
 // component/login.json
 {
     "steps": [
         {
             "operation": "get",
-            "#data": "login_data"
+            "#data": "login_url"
         },
         {
             "operation": "input",
@@ -68,10 +81,12 @@
 // data/test-config001.json
 {
     "login_data": {
-        "url": "",
         "id#username": "",
         "id#password": ""
     },
+    "login_url": {
+        "url": ""
+    }
 }
 
 // test-config.json
