@@ -4,12 +4,10 @@
             "get": "#login_url"
         },
         {
-            "operation": "input",
-            "#data": "login_data"
+            "input": "#login_data"
         },
         {
-            "operation": "click",
-            "target": "class#loginSubmitBtn"
+            "click": "class#loginSubmitBtn"
         },
         {
             "operation": "click",

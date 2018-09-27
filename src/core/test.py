@@ -133,11 +133,71 @@ class Test():
             elif "#data" in step:
                 url = get_url(step["#data"])
         else:
-            if not step["get"].startswith("#"):
+            if isinstance(step["get"], dict):
+                if "url" in step["get"]:
+                    url = step["get"]["url"]
+            elif not step["get"].startswith("#"):
                 url = step["get"]
             else:
                 url = get_url(step["get"][1::])
         self.browser.get(url)
+
+    def do_input(self, step, is_standard=False):
+        data = {}
+        if is_standard:
+            if "data" in step:
+                data = step["data"]
+            if "#data" in step:
+                if step["#data"] in self.data:
+                    data = self.data[step["#data"]]
+        else:
+            if isinstance(step["input"], dict):
+                data = step["input"]
+            elif step["input"].startswith("#"):
+                variable_name = step["input"][1::]
+                if variable_name in self.data:
+                    data = self.data[variable_name]
+        self.fill_data(data)
+
+    def do_click(self, step, is_standard=False):
+        elem = None
+        if is_standard:
+            if "target" in step:
+                elem = step["target"]
+            elif "#data" in step:
+                elem = self.data[step["#data"]]["target"]
+        else:
+            elem = step["click"]
+
+        if elem:
+            try:
+                self.get_elem(elem).click()
+            except Exception as e:
+                print("[Click Error]: %s" % elem)
+
+    def do_screenshot(self, step, is_standard):
+        screenshot = self.get_config("screenshot")
+        if not screenshot:
+            return
+        data_path = os.path.join(OUTPUT_PATH, screenshot)
+        if  not os.path.exists(data_path):
+            os.makedirs(data_path)
+
+        if is_standard:
+            if "#loop_counter#" in step["filename"]:
+                file_name = step["filename"].replace("#loop_counter#", str(step["loop_counter"]))
+            else:
+                file_name = step["filename"]
+        else:
+            if "#loop_counter#" in step["screenshot"]:
+                file_name = step["screenshot"].replace("#loop_counter#", str(step["loop_counter"]))
+            elif step["screenshot"].startswith("#"):
+                file_name = step["screenshot"][1::]
+            else:
+                file_name = step["screenshot"]
+
+        path = os.path.join(data_path, file_name)
+        self.browser.save_screenshot(path)
 
     def run_steps(self, steps):
         if steps:
@@ -148,31 +208,16 @@ class Test():
                     self.do_get(step, is_standard)
 
                 elif operation == OPERATION["INPUT"]:
-                    if "data" in step:
-                        self.fill_data(step["data"])
-                    if "#data" in step:
-                        self.fill_data(self.data[step["#data"]])
+                    self.do_input(step, is_standard)
 
                 elif operation == OPERATION["CLICK"]:
-                    try:
-                        if "target" in step:
-                            self.get_elem(step["target"]).click()
-                        elif "#data" in step:
-                            self.get_elem(self.data[step["#data"]]["target"]).click()
-                    except Exception as e:
-                        print(e)
+                    self.do_click(step, is_standard)
 
                 elif operation == OPERATION["SCREENSHOT"]:
-                    data_path = os.path.join(OUTPUT_PATH, self.config["screenshot"])
-                    if  not os.path.exists(data_path):
-                        os.makedirs(data_path)
-                    if "#loop_counter#" in step["filename"]:
-                        file_name = step["filename"].replace("#loop_counter#", str(step["loop_counter"]))
-                    else:
-                        file_name = step["filename"]
+                    self.do_screenshot(step, is_standard)
 
-                    file_name = os.path.join(data_path, file_name)
-                    self.browser.save_screenshot(file_name)
+                elif operation == OPERATION["SCRIPT"]:
+                    self.browser.execute_script(self.get_script(step["script"]))
 
                 elif operation == OPERATION["SWITCH_TO_FRAME"]:
                     self.browser.switch_to_frame(self.get_elem(step['target']))
@@ -188,21 +233,15 @@ class Test():
                 elif operation == OPERATION["LOOP"]:
                     loop_steps = step["steps"]
                     loop_times = int(step["times"])
-
                     for loop in range(loop_times):
                         for step in loop_steps:
                             step["loop_counter"] = loop
                         self.run_steps(loop_steps)
-
                 elif operation == OPERATION["SLEEP"]:
                     time.sleep(int(step["time"]))
                     # self.browser.implicitly_wait(int(step["time"]))
-
                 elif operation == OPERATION["STOP"]:
                     break
-
-                elif operation == OPERATION["SCRIPT"]:
-                    self.browser.execute_script(self.get_script(step["script"]))
 
     def run(self):
         self.browser = self.get_browser(self.get_config("driver_path"))
