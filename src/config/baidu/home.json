@@ -1,7 +1,7 @@
 {
     "project": "baidu",
-    "driver_path": "operadriver_linux64/operadriver",
-    "driver": "opera",
+    "driver_path": "chromedriver_linux64/chromedriver",
+    "driver": "chrome",
     "steps": [
         {
             "operation": "get",
@@ -16,6 +16,15 @@
         {
             "operation": "click",
             "target": "id#su"
+        },
+
+        {
+            "operation": "sleep",
+            "time": 2
+        },
+        {
+            "operation": "click",
+            "target": "xpath#//h3[@class='t'][1]"
         }
     ]
 }

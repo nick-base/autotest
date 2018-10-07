@@ -1,6 +1,6 @@
 {
     "project": "qq",
-    "driver": "chromedriver_linux64/chromedriver",
+    "driver_path": "chromedriver_linux64/chromedriver",
     "screenshot": "qq",
     "steps": [
         {

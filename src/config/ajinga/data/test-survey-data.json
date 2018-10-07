@@ -7,6 +7,7 @@
         "name#mobile": "st0304@qq.com",
         "id#id_password": "123456"
     },
+    "register_url": "https://test.ajinga.com/register/",
     "login_data": {
         "id#id_email_mobile": "st0304@qq.com",
         "id#id_password": "123456"
