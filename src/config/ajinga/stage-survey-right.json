@@ -1,20 +1,17 @@
 {
     "project": "ajinga-stage",
     "driver_path": "chromedriver_linux64/chromedriver",
-    "screenshot": "ajinga-stage/01/",
+    "screenshot": "ajinga-stage/survey-r/",
     "data": "stage-survey-data",
     "steps": [
         {
-            "operation": "component",
-            "name": "register"
+            "c": "register"
         },
         {
-            "operation": "component",
-            "name": "apply-job"
+            "c": "apply-job"
         },
         {
-            "operation": "component",
-            "name": "do-problem-survey-wrong"
+            "c": "do-problem-survey-wrong"
         }
     ]
 }

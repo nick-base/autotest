@@ -1,16 +1,14 @@
 {
     "project": "ajinga-stage",
     "driver_path": "chromedriver_linux64/chromedriver",
-    "screenshot": "ajinga-stage/02/",
+    "screenshot": "ajinga-stage/do-values/",
     "data": "stage-survey-data",
     "steps": [
         {
-            "operation": "component",
-            "name": "login"
+            "c": "login"
         },
         {
-            "operation": "component",
-            "name": "do-values"
+            "c": "do-values"
         }
     ]
 }

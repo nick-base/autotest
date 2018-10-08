@@ -5,12 +5,10 @@
     "data": "local-survey-data",
     "steps": [
         {
-            "operation": "component",
-            "name": "login"
+            "c": "login"
         },
         {
-            "operation": "component",
-            "name": "apply-job"
+            "c": "apply-job"
         }
     ]
 }

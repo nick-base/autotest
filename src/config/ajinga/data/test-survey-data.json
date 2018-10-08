@@ -1,6 +1,5 @@
 {
     "register_data": {
-        "url": "https://test.ajinga.com/register/",
         "name#first_name": "st",
         "name#last_name": "0304",
         "name#email_address": "st0304@qq.com",
