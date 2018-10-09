@@ -7,11 +7,13 @@
             "input": "#login_data"
         },
         {
+            "screenshot": "login.png"
+        },
+        {
             "click": "class#loginSubmitBtn"
         },
         {
-            "operation": "click",
-            "target": "class#close-icon"
+            "click": "class#close-icon"
         }
     ]
 }

@@ -39,10 +39,19 @@ OPERATION = {
 SELECTOR_SEPARATOR = '#'
 
 class Test():
-    def __init__(self, config_filename):
+    def __init__(self, config):
+        if type(config == tuple):
+            config_filename, data = config
+        else:
+            config_filename = config
+            data = None
+
         config_file = os.path.join(CONFIG_PATH, config_filename)
         self.config_path = os.path.abspath(os.path.dirname(config_file))
         self.config = load_json_file(config_file)
+        self.browser = self.get_browser(self.get_config("driver_path"))
+        data = data or self.get_config("data")
+        self.data = self.load_data(data)
 
     def get_config(self, key):
         if key and key in self.config:
@@ -179,6 +188,8 @@ class Test():
         screenshot = self.get_config("screenshot")
         if not screenshot:
             return
+        if screenshot.startswith('#'):
+            screenshot = self.data[screenshot.lstrip('#')]
         data_path = os.path.join(OUTPUT_PATH, screenshot)
         if  not os.path.exists(data_path):
             os.makedirs(data_path)
@@ -253,8 +264,6 @@ class Test():
                     break
 
     def run(self):
-        self.browser = self.get_browser(self.get_config("driver_path"))
-        self.data = self.load_data(self.get_config("data"))
         self.run_steps(self.get_config("steps"))
 
         print("Press enter to exit...")

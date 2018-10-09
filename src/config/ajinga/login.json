@@ -1,0 +1,10 @@
+{
+    "driver_path": "chromedriver_linux64/chromedriver",
+    "data": "data",
+    "screenshot": "#screenshot",
+    "steps": [
+        {
+            "c": "login"
+        }
+    ]
+}
