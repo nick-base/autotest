@@ -1,0 +1,22 @@
+{
+    "screenshot": "ajinga",
+    "login_url": "http://127.0.0.1:8000/login/",
+    "login_data": {
+        "id#id_email_mobile": "st0309@qq.com",
+        "id#id_password": "123456"
+    },
+    "register_url": "http://127.0.0.1:8000/register/",
+    "register_data": {
+        "name#first_name": "st",
+        "name#last_name": "0309",
+        "name#email_address": "st0309@qq.com",
+        "name#mobile": "st0309@qq.com",
+        "id#id_password": "123456"
+    },
+    "apply_job": {
+        "url": "http://127.0.0.1:8000/job-detail-new/14629/c/"
+    },
+    "do_problem_survey": {
+        "target": "xpath#//div[@class='reya-image-box'][2]"
+    }
+}
