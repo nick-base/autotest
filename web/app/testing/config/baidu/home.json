@@ -1,0 +1,30 @@
+{
+    "project": "baidu",
+    "driver_path": "chromedriver_linux64/chromedriver",
+    "driver": "chrome",
+    "steps": [
+        {
+            "operation": "get",
+            "url": "https://www.baidu.com"
+        },
+        {
+            "operation": "input",
+            "data": {
+                "id#kw": "hello"
+            }
+        },
+        {
+            "operation": "click",
+            "target": "id#su"
+        },
+
+        {
+            "operation": "sleep",
+            "time": 2
+        },
+        {
+            "operation": "click",
+            "target": "xpath#//h3[@class='t'][1]"
+        }
+    ]
+}

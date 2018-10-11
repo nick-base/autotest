@@ -1,0 +1,24 @@
+{
+    "steps": [
+        {
+            "operation": "get",
+            "url": "https://mail.qq.com/"
+        },
+        {
+            "operation": "frame",
+            "frame": "id#login_frame"
+        },
+        {
+            "operation": "input",
+            "#data": "login_data"
+        },
+        {
+            "operation": "screenshot",
+            "filename": "1.png"
+        },
+        {
+            "operation": "click",
+            "target": "id#login_button"
+        }
+    ]
+}

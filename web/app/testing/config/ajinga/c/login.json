@@ -1,0 +1,19 @@
+{
+    "steps": [
+        {
+            "get": "#login_url"
+        },
+        {
+            "input": "#login_data"
+        },
+        {
+            "screenshot": "login.png"
+        },
+        {
+            "click": "class#loginSubmitBtn"
+        },
+        {
+            "click": "class#close-icon"
+        }
+    ]
+}
