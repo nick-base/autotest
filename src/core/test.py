@@ -258,7 +258,7 @@ class Test():
                 elif operation == OPERATION["SCRIPT"]:
                     script = self.get_script(step["script"])
                     self.browser.execute_script(script)
-                    print('[script]: %s' % script)
+                    print('[script]:\n %s' % script)
 
                 elif operation == OPERATION["SWITCH_TO_FRAME"]:
                     self.browser.switch_to_frame(self.get_elem(step['frame']))
