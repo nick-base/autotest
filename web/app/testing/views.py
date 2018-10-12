@@ -4,7 +4,7 @@ from .config_list import config_list
 from .core.test import Test
 
 def index(request):
-    context = {'config_list': config_list}
+    context = {'aj_list': config_list}
     return render(request, 'index.html', context)
 
 def run(request):
