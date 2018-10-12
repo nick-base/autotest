@@ -74,8 +74,9 @@ class Test():
 
     def get_script(self, name):
         for s in SCRIPT_FILENAME:
-            if os.path.isfile(s):
-                path = os.path.join(self.config_path, s, name)
+            path = os.path.join(self.config_path, s, name)
+            if os.path.isfile(path):
+                print(path)
                 with open(path) as f:
                     script = f.read().strip('\n')
                 return script
@@ -219,6 +220,15 @@ class Test():
         if "steps" in component:
             self.run_steps(component["steps"])
 
+    def do_sleep(self, step, is_standard=False):
+        if is_standard:
+            if "time" in step:
+                time.sleep(int(step["time"]))
+            elif "#data" in step:
+                elem = self.data[step["#data"]]
+        else:
+            time.sleep(int(step["sleep"]))
+
     def run_steps(self, steps):
         if steps:
             for step in steps:
@@ -246,7 +256,9 @@ class Test():
                         self.run_steps(loop_steps)
 
                 elif operation == OPERATION["SCRIPT"]:
-                    self.browser.execute_script(self.get_script(step["script"]))
+                    script = self.get_script(step["script"])
+                    self.browser.execute_script(script)
+                    print('[script]: %s' % script)
 
                 elif operation == OPERATION["SWITCH_TO_FRAME"]:
                     self.browser.switch_to_frame(self.get_elem(step['frame']))
@@ -258,7 +270,7 @@ class Test():
                     self.do_component(step, is_standard)
 
                 elif operation == OPERATION["SLEEP"]:
-                    time.sleep(int(step["time"]))
+                    self.do_sleep(step, is_standard)
 
                 elif operation == OPERATION["STOP"]:
                     break
