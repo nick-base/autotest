@@ -1,14 +1,37 @@
-configs = {
-    'baidu-home': 'baidu/home.json',
-}
-
-# default 127.0.0.1:8000
-configs.update({
-    'login': ('ajinga/login.json', 'default/login'),
-    'hr': ('ajinga/login.json', 'default/login-hr'),
-})
-
-# local 127.0.0.1:8000
-configs.update({
-    'local-login': ('ajinga/login.json', 'local/login'),
-})
+config_list = [
+    {
+        'name': 'ajinga',
+        'items': [
+            {
+                'name': 'login',
+                'file': 'ajinga/login.json',
+                'data': 'default/login',
+            },
+            {
+                'name': 'hr',
+                'file': 'ajinga/login.json',
+                'data': 'default/login-hr',
+            },
+        ],
+    },
+    {
+        'name': "ajinga-local",
+        'items': [
+           {
+               'name': 'local-login',
+               'file': 'ajinga/login.json',
+               'data': 'local/login',
+           },
+       ]
+    },
+    {
+        'name': 'demo',
+        'items': [
+            {
+                'name': 'baidu-home',
+                'file': 'baidu/home.json',
+                'data': ''
+            },
+        ],
+    },
+]

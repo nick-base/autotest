@@ -1,12 +1,39 @@
 <!DOCTYPE html>
-<html>
+{% load static %}
+<html lang="en">
 <head>
-    <title>Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Testing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'testing/main.js' %}"></script>
 </head>
 <body>
+    <div class="container">
+        <div id="accordion">
+            {% for grop in config_list %}
+                <div class="card">
+                    <div class="card-header" id="heading-{{ forloop.counter }}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse-{{ forloop.counter }}">
+                            {{ grop.name }}
+                            </button>
+                        </h5>
+                    </div>
 
-{% load static %}
-<script type="text/javascript" src="{% static "testing/test.js" %}"></script>
-{{ msg }}
+                    <div id="collapse-{{ forloop.counter }}" class="collapse {% if forloop.counter == 1 %}show{% endif %}" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#accordion">
+                        <div class="card-body">
+                            {%  for config in grop.items %}
+                                <button type="button" class="btn btn-secondary btn-testing" data-group="{{ grop.name }}" data-name="{{ config.name }}">{{ config.name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>

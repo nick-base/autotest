@@ -40,7 +40,7 @@ SELECTOR_SEPARATOR = '#'
 
 class Test():
     def __init__(self, config):
-        if type(config == tuple):
+        if type(config) == tuple:
             config_filename, data = config
         else:
             config_filename = config

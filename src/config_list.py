@@ -1,5 +1,6 @@
 configs = {
-    'baidu-home': 'baidu/home.json',
+    'baidu-home': 'baidu/home',
+    'jobstreet': ('test/jobstreet.json', ''),
 }
 
 # default 127.0.0.1:8000

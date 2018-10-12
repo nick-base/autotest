@@ -4,8 +4,8 @@ import codecs
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
-from settings import PROJECT_ROOT
-from core.utils import load_json_file
+from testing.settings import PROJECT_ROOT
+from testing.core.utils import load_json_file
 
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "config")
 DRIVER_PATH = os.path.join(PROJECT_ROOT, "drivers")
@@ -40,7 +40,7 @@ SELECTOR_SEPARATOR = '#'
 
 class Test():
     def __init__(self, config):
-        if type(config == tuple):
+        if type(config) == tuple:
             config_filename, data = config
         else:
             config_filename = config
@@ -265,6 +265,3 @@ class Test():
 
     def run(self):
         self.run_steps(self.get_config("steps"))
-
-        print("Press enter to exit...")
-        enter = input()
