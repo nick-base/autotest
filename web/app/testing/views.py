@@ -4,10 +4,12 @@ from .core.test import Test
 
 from .config_list import config_list
 from .config_list_ajinga import config_list as aj_list
+from .config_list_common import config_list as common_list
 
 config_map = {
     'demo': config_list,
     'ajinga': aj_list,
+    # 'common': common_list,
 }
 
 def home(request):
@@ -29,6 +31,14 @@ def ajinga(request):
         'config_map': config_map,
         'config_list': aj_list,
         'project': 'ajinga',
+    }
+    return render(request, 'index.html', context)
+
+def common(request):
+    context = {
+        'config_map': config_map,
+        'config_list': common_list,
+        'project': 'common',
     }
     return render(request, 'index.html', context)
 

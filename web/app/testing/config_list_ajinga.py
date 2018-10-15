@@ -40,6 +40,43 @@ ajinga = {
     ],
 }
 
+common_dev = {
+    'name': 'common-dev',
+    'items': [
+        {
+            'name': 'ajinga-git',
+            'file': 'ajinga/ajinga-git.json',
+            'data': ''
+        },
+        {
+            'name': 'qqmail-dev',
+            'file': 'ajinga/qqmail-dev.json',
+            'data': ''
+        },
+        {
+            'name': 'qiniu-dev',
+            'file': 'ajinga/qiniu-dev.json',
+            'data': ''
+        },
+    ],
+}
+
+common_prod = {
+    'name': 'common-prod',
+    'items': [
+        {
+            'name': 'qqmail-prod',
+            'file': 'ajinga/qqmail-prod.json',
+            'data': ''
+        },
+        {
+            'name': 'qiniu-prod',
+            'file': 'ajinga/qiniu-prod.json',
+            'data': ''
+        },
+    ],
+}
+
 # stage.ajinga.com
 ajinga_stage = {
     'name': 'ajinga-stage',
@@ -182,5 +219,7 @@ config_list = [
     ajinga_stage,
     ajinga_test,
     ajinga_local,
+    common_dev,
+    common_prod,
     # demo,
 ]
