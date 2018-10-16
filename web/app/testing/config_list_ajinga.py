@@ -37,6 +37,11 @@ ajinga = {
             'file': 'ajinga/login.json',
             'data': 'default/login-elc',
         },
+        {
+            'name': 'jobstreet-login',
+            'file': 'ajinga/jobstreet.json',
+            'data': '',
+        }
     ],
 }
 
@@ -203,6 +208,53 @@ ajinga_local = {
     ],
 }
 
+# www.ajinga.com
+ajinga_prod = {
+    'name': 'ajinga-prod',
+    'items': [
+        {
+            'name': 'login',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login',
+        },
+        {
+            'name': 'ajing-hr',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login-hr',
+        },
+        {
+            'name': 'starbuckscn',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login-starbuckscn',
+        },
+        {
+            'name': 'henkel',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login-henkel',
+        },
+        {
+            'name': 'nielsen',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login-nielsen',
+        },
+        {
+            'name': 'coach',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login-coach',
+        },
+        {
+            'name': 'elc',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login-elc',
+        },
+        {
+            'name': 'elc-q-bug',
+            'file': 'ajinga/elc-q-bug.json',
+            'data': 'prod/login-elc',
+        },
+    ],
+}
+
 demo = {
     'name': 'demo',
     'items': [
@@ -216,10 +268,13 @@ demo = {
 
 config_list = [
     ajinga,
+    ajinga_local,
+
     ajinga_stage,
     ajinga_test,
-    ajinga_local,
-    common_dev,
-    common_prod,
+    ajinga_prod,
+
+    # common_dev,
+    # common_prod,
     # demo,
 ]

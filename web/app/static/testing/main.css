@@ -24,3 +24,7 @@
     background-color: #cce5ff;
     border-color: #b8daff;
 }
+
+#accordion .btn-link {
+    color: #666;
+}

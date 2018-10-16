@@ -7,9 +7,9 @@ from .config_list_ajinga import config_list as aj_list
 from .config_list_common import config_list as common_list
 
 config_map = {
-    'demo': config_list,
+    # 'demo': config_list,
     'ajinga': aj_list,
-    # 'common': common_list,
+    'common': common_list,
 }
 
 def home(request):

@@ -1,8 +1,0 @@
-{
-    "screenshot": "ajinga",
-    "login_url": "http://192.168.244.59:8000/login/",
-    "login_data": {
-        "id#id_email_mobile": "st0309@qq.com",
-        "id#id_password": "123456"
-    }
-}

@@ -27,6 +27,7 @@ OPERATION = {
 
     "SCREENSHOT": "screenshot",
     "SCRIPT": "script",
+    "SCRIPTS": "scripts",
 
     "SWITCH_TO_FRAME": "frame",
     "SWITCH_TO_DEFAULT_CONTENT": "content",
@@ -261,6 +262,10 @@ class Test():
                     script = self.get_script(step["script"])
                     self.browser.execute_script(script)
                     print('[script]: %s' % script)
+
+                elif operation == OPERATION["SCRIPTS"]:
+                    self.browser.execute_script(step["scripts"])
+                    print('[scripts]: %s' % script)
 
                 elif operation == OPERATION["SWITCH_TO_FRAME"]:
                     self.browser.switch_to_frame(self.get_elem(step['frame']))
