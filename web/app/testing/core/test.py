@@ -101,8 +101,8 @@ class Test():
             from selenium.webdriver.firefox.webdriver import WebDriver
         browser = WebDriver(executable_path = get_driver_path(self.get_config('driver_path')))
         browser.maximize_window()
-        browser.set_page_load_timeout(10)
-        browser.set_script_timeout(10)
+        # browser.set_page_load_timeout(10)
+        # browser.set_script_timeout(10)
         return browser
 
     def get_elem(self, selector):
@@ -163,10 +163,11 @@ class Test():
                 url = step["get"]
             else:
                 url = get_url(step["get"][1::])
-        try:
-            self.browser.get(url)
-        except:
-            self.browser.execute_script('window.stop()')
+        self.browser.get(url)
+        # try:
+        #     self.browser.get(url)
+        # except:
+        #     self.browser.execute_script('window.stop()')
 
     def do_input(self, step, is_standard=False):
         data = {}
