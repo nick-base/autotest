@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import codecs
 import time
@@ -14,6 +15,7 @@ OUTPUT_PATH = os.path.join(PROJECT_ROOT, "output")
 COMPONENT_FILENAME = ["component", "plugs", "c", "p"]
 DATA_FILENAME = ["data", "d"]
 SCRIPT_FILENAME = ["script", "s"]
+SHELL_FILENAME = ["shell", "sh"]
 EXTENSION_NAME = ".json"
 
 def get_driver_path(path):
@@ -28,6 +30,7 @@ OPERATION = {
     "SCREENSHOT": "screenshot",
     "SCRIPT": "script",
     "SCRIPTS": "scripts",
+    "SHELL": "sh",
 
     "SWITCH_TO_FRAME": "frame",
     "SWITCH_TO_DEFAULT_CONTENT": "content",
@@ -78,11 +81,17 @@ class Test():
         for s in SCRIPT_FILENAME:
             path = os.path.join(self.config_path, s, name)
             if os.path.isfile(path):
-                print(path)
                 with open(path) as f:
                     script = f.read().strip('\n')
                 return script
         return ""
+
+    def get_shell_path(self, name):
+        for sh in SHELL_FILENAME:
+            path = os.path.join(self.config_path, sh, name)
+            if os.path.isfile(path):
+                return path
+        return None
 
     def get_browser(self, name):
         driver = self.get_config('driver') and self.get_config('driver').lower() or "chrome"
@@ -278,6 +287,12 @@ class Test():
 
                 elif operation == OPERATION["SLEEP"]:
                     self.do_sleep(step, is_standard)
+
+                elif operation == OPERATION["SHELL"]:
+                    sh = self.get_shell_path(step["sh"])
+                    if sh:
+                        print("[shell]: %s" % sh)
+                        os.system(sh)
 
                 elif operation == OPERATION["STOP"]:
                     break

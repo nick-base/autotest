@@ -35,7 +35,20 @@ common_prod = {
     ],
 }
 
+demo = {
+    'name': 'demo',
+    'items': [
+        {
+            'name': 'baidu-home',
+            'file': 'baidu/home.json',
+            'data': ''
+        },
+    ],
+}
+
 config_list = [
     common_dev,
     common_prod,
+
+    demo,
 ]

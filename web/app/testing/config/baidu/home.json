@@ -4,6 +4,9 @@
     "driver": "chrome",
     "steps": [
         {
+            "sh": "test.sh"
+        },
+        {
             "operation": "get",
             "url": "https://www.baidu.com"
         },
