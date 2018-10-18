@@ -17,6 +17,7 @@ DATA_FILENAME = ["data", "d"]
 SCRIPT_FILENAME = ["script", "s"]
 SHELL_FILENAME = ["shell", "sh"]
 EXTENSION_NAME = ".json"
+SLEEP_TIME_BETWEEN_STEPS = 1
 
 def get_driver_path(path):
     return os.path.join(DRIVER_PATH, path)
@@ -57,6 +58,7 @@ class Test():
         self.browser = self.get_browser(self.get_config("driver_path"))
         data = data or self.get_config("data")
         self.data = self.load_data(data)
+        print("[data]: " % self.data)
 
     def get_config(self, key):
         if key and key in self.config:
@@ -303,5 +305,6 @@ class Test():
                 elif operation == OPERATION["STOP"]:
                     break
 
+                time.sleep(SLEEP_TIME_BETWEEN_STEPS)
     def run(self):
         self.run_steps(self.get_config("steps"))

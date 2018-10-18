@@ -40,7 +40,7 @@ ajinga = {
         {
             'name': 'jobstreet-login',
             'file': 'ajinga/jobstreet.json',
-            'data': '',
+            'data': 'default/main',
         }
     ],
 }
@@ -121,6 +121,11 @@ ajinga_stage = {
             'file': 'ajinga/login.json',
             'data': 'stage/login-elc',
         },
+        {
+            'name': 'jobstreet-login',
+            'file': 'ajinga/jobstreet.json',
+            'data': 'stage/main',
+        }
     ],
 }
 
