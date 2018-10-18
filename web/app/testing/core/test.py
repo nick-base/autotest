@@ -17,6 +17,8 @@ DATA_FILENAME = ["data", "d"]
 SCRIPT_FILENAME = ["script", "s"]
 SHELL_FILENAME = ["shell", "sh"]
 EXTENSION_NAME = ".json"
+
+LOAD_TIMEOUT = 5
 SLEEP_TIME_BETWEEN_STEPS = 1
 
 def get_driver_path(path):
@@ -58,7 +60,6 @@ class Test():
         self.browser = self.get_browser(self.get_config("driver_path"))
         data = data or self.get_config("data")
         self.data = self.load_data(data)
-        print("[data]: " % self.data)
 
     def get_config(self, key):
         if key and key in self.config:
@@ -76,7 +77,10 @@ class Test():
         for d in DATA_FILENAME:
             path = os.path.join(self.config_path, d, "%s%s" % (name, EXTENSION_NAME))
             if os.path.isfile(path):
-                return load_json_file(path)
+                data = load_json_file(path)
+                print('[data path]: %s' % path)
+                print('[data]: %s' % data)
+                return data
         return {}
 
     def get_script(self, name):
@@ -103,8 +107,8 @@ class Test():
             from selenium.webdriver.firefox.webdriver import WebDriver
         browser = WebDriver(executable_path = get_driver_path(self.get_config('driver_path')))
         browser.maximize_window()
-        # browser.set_page_load_timeout(10)
-        # browser.set_script_timeout(10)
+        browser.set_page_load_timeout(LOAD_TIMEOUT)
+        browser.set_script_timeout(LOAD_TIMEOUT)
         return browser
 
     def get_elem(self, selector):
@@ -165,11 +169,11 @@ class Test():
                 url = step["get"]
             else:
                 url = get_url(step["get"][1::])
-        self.browser.get(url)
-        # try:
-        #     self.browser.get(url)
-        # except:
-        #     self.browser.execute_script('window.stop()')
+        # self.browser.get(url)
+        try:
+            self.browser.get(url)
+        except:
+            self.browser.execute_script('window.stop()')
 
     def do_input(self, step, is_standard=False):
         data = {}
