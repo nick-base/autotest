@@ -96,6 +96,7 @@ class Test():
         for sh in SHELL_FILENAME:
             path = os.path.join(self.config_path, sh, name)
             if os.path.isfile(path):
+                print('[shell]: %s' % path)
                 return path
         return None
 
@@ -105,11 +106,15 @@ class Test():
             from selenium.webdriver.chrome.webdriver import WebDriver
         elif driver == "firefox":
             from selenium.webdriver.firefox.webdriver import WebDriver
-        browser = WebDriver(executable_path = get_driver_path(self.get_config('driver_path')))
-        browser.maximize_window()
-        browser.set_page_load_timeout(LOAD_TIMEOUT)
-        browser.set_script_timeout(LOAD_TIMEOUT)
-        return browser
+
+        driver_path = self.get_config('driver_path')
+        if driver_path:
+            browser = WebDriver(executable_path = get_driver_path(driver_path))
+            browser.maximize_window()
+            # browser.set_page_load_timeout(LOAD_TIMEOUT)
+            # browser.set_script_timeout(LOAD_TIMEOUT)
+            return browser
+        return None
 
     def get_elem(self, selector):
         selector_type, target = selector.split(SELECTOR_SEPARATOR)
@@ -169,11 +174,11 @@ class Test():
                 url = step["get"]
             else:
                 url = get_url(step["get"][1::])
-        # self.browser.get(url)
-        try:
-            self.browser.get(url)
-        except:
-            self.browser.execute_script('window.stop()')
+        self.browser.get(url)
+        # try:
+        #     self.browser.get(url)
+        # except:
+        #     self.browser.execute_script('window.stop()')
 
     def do_input(self, step, is_standard=False):
         data = {}
@@ -258,6 +263,18 @@ class Test():
             for step in steps:
                 operation, is_standard = self.get_operation_type(step)
 
+                if operation == OPERATION["SHELL"]:
+                    sh = self.get_shell_path(step["sh"])
+                    if sh:
+                        print("[shell]: %s" % sh)
+                        os.system(sh)
+
+                elif operation == OPERATION["STOP"]:
+                    break
+
+                if not self.browser:
+                    continue
+
                 if operation == OPERATION["GET"]:
                     self.do_get(step, is_standard)
 
@@ -299,15 +316,6 @@ class Test():
 
                 elif operation == OPERATION["SLEEP"]:
                     self.do_sleep(step, is_standard)
-
-                elif operation == OPERATION["SHELL"]:
-                    sh = self.get_shell_path(step["sh"])
-                    if sh:
-                        print("[shell]: %s" % sh)
-                        os.system(sh)
-
-                elif operation == OPERATION["STOP"]:
-                    break
 
                 time.sleep(SLEEP_TIME_BETWEEN_STEPS)
     def run(self):

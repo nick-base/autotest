@@ -41,7 +41,12 @@ ajinga = {
             'name': 'jobstreet-login',
             'file': 'ajinga/jobstreet.json',
             'data': 'default/main',
-        }
+        },
+        {
+            'name': 'send-interview-email',
+            'file': 'ajinga/send-interview-email.json',
+            'data': 'default/main',
+        },
     ],
 }
 
