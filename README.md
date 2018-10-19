@@ -1,14 +1,33 @@
 ## autotest 自动化测试程序 version 1.0
 
-#### 一个简单的案例
+#### 目的
 
-###### 添加config文件
+实现一些简单的浏览器页面操作，减少重复工作
 
-```json
+#### 技术
+
+ - Pyhton 3.5
+ - Django 2.1.2
+ - Selenium 3.14.0
+
+#### 实现思路
+
+使用python读取json配置文件，然后模拟执行浏览器操作。
+核心类`core/test.py`
+
+ - project: 项目名
+ - driver_path： 驱动路径，存在项目下的drivers目录下
+ - steps: 执行操作
+
+```js
 {
     "project": "baidu",
-    "driver": "chromedriver_linux64/chromedriver",
+    "driver_path": "chromedriver_linux64/chromedriver",
+    "driver": "chrome",
     "steps": [
+        {
+            "sh": "test.sh"
+        },
         {
             "operation": "get",
             "url": "https://www.baidu.com"
@@ -22,86 +41,88 @@
         {
             "operation": "click",
             "target": "id#su"
-        }
-    ]
-}
-
-```
-
-###### 生成测试
-```python
- t = Test('baidu/home.json')
- t.run()
-```
-
-#### 提高可复用性
-
-很多操作是通用的，比如登录，可以抽离出来作为一个componment。登录的时候表单填写的数据不同，所以，数据部分可以统一放在一个data文件里。
-
-因此，调整后的config结构为
-```
- -- component
- -- data
- -- script
- -- test-config.json
-```
-#### 实例
-```
-// standard
-{
-    "operation": "get",
-    "#data": "login_url"
-},
-
-// simplify
-{
-    "get": "#login_url",
-},
-```
-
-```js
-// component/login.json
-{
-    "steps": [
-        {
-            "operation": "get",
-            "#data": "login_url"
         },
+
         {
-            "operation": "input",
-            "#data": "login_data"
+            "operation": "sleep",
+            "time": 2
         },
         {
             "operation": "click",
-            "target": "class#loginSubmitBtn"
+            "target": "xpath#//h3[@class='t'][1]"
         }
     ]
 }
+```
 
-// data/test-config001.json
+###### get请求
+```js
 {
-    "login_data": {
-        "id#username": "",
-        "id#password": ""
-    },
-    "login_url": {
-        "url": ""
-    }
+    "operation": "get",
+    "url": "https://www.baidu.com"
 }
 
-// test-config.json
 {
-    "project": "nick-test",
-    "driver": "chromedriver_linux64/chromedriver",
-    "screenshot": "nick-test/001",
-    "data": "test-config001",
+    "op": "get",
+    "url": "https://www.baidu.com"
+}
+
+{
+    "get": "https://www.baidu.com"
+}
+
+{
+    "get": "#baidu_url"
+}
+// baidu_url 存在数据存贮data文件中
+```
+###### 组件
+定义
+
+```js
+{
     "steps": [
         {
-            "operation": "component",
-            "name": "login"
+            "get": "https://mail.qq.com/"
+        },
+        {
+            "frame": "id#login_frame"
+        },
+        {
+            "input": "#login_data"
+        },
+        {
+            "screenshot": "1.png"
+        },
+        {
+            "click": "id#login_button"
         }
-        // Todo
     ]
 }
+```
 
+引用
+```js
+{
+    "operation": "component",
+    "name": "login"
+}
+
+{
+    "component": "login"
+}
+
+{
+    "c": "login"
+}
+```
+
+数据
+```js
+{
+    "login_data": {
+        "id#u": "",
+        "id#p": ""
+    }
+}
 ```
