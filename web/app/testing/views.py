@@ -1,46 +1,62 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from .core.test import Test
+from django.views.generic import View
 
 from .config_list import config_list
 from .config_list_ajinga import config_list as aj_list
 from .config_list_common import config_list as common_list
 
 config_map = {
-    # 'demo': config_list,
+    'demo': config_list,
     'ajinga': aj_list,
     'common': common_list,
 }
 
-def home(request):
-    context = {
-        'config_map': config_map
-    }
-    return render(request, 'home.html', context)
+skip = [
+    'demo',
+]
 
-def demo(request):
-    context = {
-        'config_map': config_map,
-        'config_list': config_list,
-        'project': 'demo',
-    }
-    return render(request, 'index.html', context)
+class BaseView(View):
+    def __init__(self):
+        super(BaseView, self).__init__()
+        self.init_data()
 
-def ajinga(request):
-    context = {
-        'config_map': config_map,
-        'config_list': aj_list,
-        'project': 'ajinga',
-    }
-    return render(request, 'index.html', context)
+    def init_data(self):
+        keys = sorted(config_map.keys())
+        menus = [k for k in keys if k not in skip]
+        self.tempdict = {
+            'menus': menus,
+            'config_map': config_map
+        }
 
-def common(request):
-    context = {
-        'config_map': config_map,
-        'config_list': common_list,
-        'project': 'common',
-    }
-    return render(request, 'index.html', context)
+class HomeView(BaseView):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'home.html', self.tempdict)
+
+class AjingaView(BaseView):
+    def get(self, request, *args, **kwargs):
+        self.tempdict.update({
+            'project': 'ajinga',
+            'config_list': aj_list
+        })
+        return render(request, 'index.html', self.tempdict)
+
+class CommonView(BaseView):
+    def get(self, request, *args, **kwargs):
+        self.tempdict.update({
+            'config_list': common_list,
+            'project': 'common',
+        })
+        return render(request, 'index.html', self.tempdict)
+
+class DemoView(BaseView):
+    def get(self, request, *args, **kwargs):
+        self.tempdict.update({
+            'config_list': config_list,
+            'project': 'demo',
+        })
+        return render(request, 'index.html', self.tempdict)
 
 def run(request):
     if request.method=='GET':

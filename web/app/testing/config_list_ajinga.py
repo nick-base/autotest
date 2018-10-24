@@ -3,9 +3,14 @@ ajinga = {
     'name': 'ajinga',
     'items': [
         {
+            'name': 'register',
+            'file': 'ajinga/register.json',
+            'data': 'default/main',
+        },
+        {
             'name': 'login',
             'file': 'ajinga/login.json',
-            'data': 'default/login',
+            'data': 'default/main',
         },
         {
             'name': 'ajing-hr',
@@ -91,6 +96,11 @@ common_prod = {
 ajinga_stage = {
     'name': 'ajinga-stage',
     'items': [
+        {
+            'name': 'register',
+            'file': 'ajinga/register.json',
+            'data': 'stage/main',
+        },
         {
             'name': 'login',
             'file': 'ajinga/login.json',
