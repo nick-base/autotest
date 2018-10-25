@@ -4,6 +4,7 @@ import json
 import codecs
 import time
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.select import Select
 
 from testing.settings import PROJECT_ROOT
 from testing.core.utils import load_json_file
@@ -25,23 +26,24 @@ def get_driver_path(path):
     return os.path.join(DRIVER_PATH, path)
 
 OPERATION = {
-    "OPERATION": ["operation", "op", "do"],
-    "GET": "get",
-    "INPUT": "input",
-    "CLICK": "click",
+    "operation": ["operation", "op", "do"],
+    "get": "get",
+    "input": "input",
+    "click": "click",
+    "select": "select",
 
-    "SCREENSHOT": "screenshot",
-    "SCRIPT": "script",
-    "SCRIPTS": "scripts",
-    "SHELL": "sh",
+    "screenshot": "screenshot",
+    "script": "script",
+    "scripts": "scripts",
+    "shell": "sh",
 
-    "SWITCH_TO_FRAME": "frame",
-    "SWITCH_TO_DEFAULT_CONTENT": "content",
+    "switch_to_frame": "frame",
+    "switch_to_default_content": "content",
 
-    "COMPONENT": ["component", "c", "plugs", "p"],
-    "LOOP": "loop",
-    "SLEEP": "sleep",
-    "STOP": "stop",
+    "component": ["component", "c", "plugs", "p"],
+    "loop": "loop",
+    "sleep": "sleep",
+    "stop": "stop",
 }
 SELECTOR_SEPARATOR = '#'
 
@@ -76,6 +78,7 @@ class Test():
     def load_data(self, name):
         for d in DATA_FILENAME:
             path = os.path.join(self.config_path, d, "%s%s" % (name, EXTENSION_NAME))
+            print(path)
             if os.path.isfile(path):
                 data = load_json_file(path)
                 print('[data path]: %s' % path)
@@ -140,7 +143,7 @@ class Test():
 
     def get_operation_type(self, step):
         is_standard = True
-        for op in OPERATION["OPERATION"]:
+        for op in OPERATION["operation"]:
             if op in step:
                 operation = step[op]
                 return operation, is_standard
@@ -174,6 +177,7 @@ class Test():
                 url = step["get"]
             else:
                 url = get_url(step["get"][1::])
+        print("[GET]: %s" % url)
         self.browser.get(url)
         # try:
         #     self.browser.get(url)
@@ -196,6 +200,47 @@ class Test():
                 if variable_name in self.data:
                     data = self.data[variable_name]
         self.fill_data(data)
+        print("[input]: %s" % data)
+
+    def do_select(self, step, is_standard):
+        try:
+            target = ""
+            if "target" in step:
+                target = step["target"]
+            else:
+                target = step["select"]
+            elem = self.get_elem(target)
+
+            value, text, index = "", "", 0
+            if "value" in step:
+                value = step["value"]
+            if "#value" in step:
+                if step["#value"] in self.data:
+                    value = self.data[step["#value"]]
+
+            if "index" in step:
+                index = step["index"]
+            if "#index" in step:
+                if step["#index"] in self.data:
+                    index = self.data[step["#index"]]
+
+            if "text" in step:
+                text = step["text"]
+            if "#text" in step:
+                if step["#text"] in self.data:
+                    text = self.data[step["#text"]]
+
+            s = Select(elem)
+            if index:
+                s.select_by_index(index)
+            elif value:
+                s.select_by_value(value)
+            elif text:
+                s.select_by_visible_text(text)
+
+            print("[Select]: %s" % target)
+        except:
+            print("[Error]: select %s" % target)
 
     def do_click(self, step, is_standard=False):
         elem = None
@@ -263,32 +308,36 @@ class Test():
             for step in steps:
                 operation, is_standard = self.get_operation_type(step)
 
-                if operation == OPERATION["SHELL"]:
+                if operation == OPERATION["shell"]:
                     sh = self.get_shell_path(step["sh"])
                     if sh:
                         print("[shell]: %s" % sh)
                         os.system(sh)
 
-                elif operation == OPERATION["STOP"]:
+                elif operation == OPERATION["stop"]:
                     break
 
                 if not self.browser:
                     continue
 
-                if operation == OPERATION["GET"]:
+                if operation == OPERATION["get"]:
                     self.do_get(step, is_standard)
 
-                elif operation == OPERATION["INPUT"]:
+                elif operation == OPERATION["input"]:
                     self.do_input(step, is_standard)
 
-                elif operation == OPERATION["CLICK"]:
+                elif operation == OPERATION["select"]:
+                    print("====================")
+                    self.do_select(step, is_standard)
+
+                elif operation == OPERATION["click"]:
                     self.do_click(step, is_standard)
 
-                elif operation == OPERATION["SCREENSHOT"]:
+                elif operation == OPERATION["screenshot"]:
                     self.do_screenshot(step, is_standard)
 
                 # standard is same with simple
-                elif operation == OPERATION["LOOP"]:
+                elif operation == OPERATION["loop"]:
                     loop_steps = step["steps"]
                     loop_times = int(step["times"])
                     for loop in range(loop_times):
@@ -296,25 +345,25 @@ class Test():
                             step["loop_counter"] = loop
                         self.run_steps(loop_steps)
 
-                elif operation == OPERATION["SCRIPT"]:
+                elif operation == OPERATION["script"]:
                     script = self.get_script(step["script"])
                     self.browser.execute_script(script)
                     print('[script]: %s' % script)
 
-                elif operation == OPERATION["SCRIPTS"]:
+                elif operation == OPERATION["scripts"]:
                     self.browser.execute_script(step["scripts"])
                     print('[scripts]: %s' % script)
 
-                elif operation == OPERATION["SWITCH_TO_FRAME"]:
+                elif operation == OPERATION["switch_to_frame"]:
                     self.browser.switch_to_frame(self.get_elem(step['frame']))
 
-                elif operation == OPERATION["SWITCH_TO_DEFAULT_CONTENT"]:
+                elif operation == OPERATION["switch_to_default_content"]:
                     self.browser.switch_to_default_content()
 
-                elif operation in OPERATION["COMPONENT"]:
+                elif operation in OPERATION["component"]:
                     self.do_component(step, is_standard)
 
-                elif operation == OPERATION["SLEEP"]:
+                elif operation == OPERATION["sleep"]:
                     self.do_sleep(step, is_standard)
 
                 time.sleep(SLEEP_TIME_BETWEEN_STEPS)

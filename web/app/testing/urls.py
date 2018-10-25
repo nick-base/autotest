@@ -6,6 +6,7 @@ vs = {
     'demo': views.DemoView,
     'ajinga': views.AjingaView,
     'common': views.CommonView,
+    'case': views.CaseView,
 }
 
 urlpatterns = [

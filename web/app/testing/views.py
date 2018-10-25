@@ -6,11 +6,13 @@ from django.views.generic import View
 from .config_list import config_list
 from .config_list_ajinga import config_list as aj_list
 from .config_list_common import config_list as common_list
+from .config_list_ajinga_case import config_list as case_list
 
 config_map = {
     'demo': config_list,
     'ajinga': aj_list,
     'common': common_list,
+    'case': case_list,
 }
 
 skip = [
@@ -47,6 +49,14 @@ class CommonView(BaseView):
         self.tempdict.update({
             'config_list': common_list,
             'project': 'common',
+        })
+        return render(request, 'index.html', self.tempdict)
+
+class CaseView(BaseView):
+    def get(self, request, *args, **kwargs):
+        self.tempdict.update({
+            'config_list': case_list,
+            'project': 'case',
         })
         return render(request, 'index.html', self.tempdict)
 

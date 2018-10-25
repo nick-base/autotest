@@ -18,6 +18,11 @@ ajinga = {
             'data': 'default/login-hr',
         },
         {
+            'name': 'ajing-293',
+            'file': 'ajinga/login.json',
+            'data': 'default/login-293',
+        },
+        {
             'name': 'starbuckscn',
             'file': 'ajinga/login.json',
             'data': 'default/login-starbuckscn',
