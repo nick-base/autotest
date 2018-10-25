@@ -45,6 +45,14 @@ OPERATION = {
     "sleep": "sleep",
     "stop": "stop",
 }
+
+ALL_OPERATIONS = []
+for k in OPERATION:
+     if type(OPERATION[k]) is str:
+         ALL_OPERATIONS.append(OPERATION[k])
+     else:
+         ALL_OPERATIONS += OPERATION[k]
+
 SELECTOR_SEPARATOR = '#'
 
 class Test():
@@ -147,9 +155,10 @@ class Test():
             if op in step:
                 operation = step[op]
                 return operation, is_standard
-        keys = list(step.keys())
-        if keys:
-            return keys[0], not is_standard
+
+        for key in list(step.keys()):
+            if key in ALL_OPERATIONS:
+                return key, not is_standard
         return None, None
 
     def do_get(self, step, is_standard=False):
@@ -238,6 +247,7 @@ class Test():
             elif text:
                 s.select_by_visible_text(text)
 
+            print(value, text, index)
             print("[Select]: %s" % target)
         except:
             print("[Error]: select %s" % target)
@@ -327,7 +337,6 @@ class Test():
                     self.do_input(step, is_standard)
 
                 elif operation == OPERATION["select"]:
-                    print("====================")
                     self.do_select(step, is_standard)
 
                 elif operation == OPERATION["click"]:
