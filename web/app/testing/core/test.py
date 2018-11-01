@@ -69,7 +69,10 @@ class Test():
         self.config = load_json_file(config_file)
         self.browser = self.get_browser(self.get_config("driver_path"))
         data = data or self.get_config("data")
-        self.data = self.load_data(data)
+        if data:
+            self.data = self.load_data(data)
+        else:
+            self.data = {}
 
     def get_config(self, key):
         if key and key in self.config:

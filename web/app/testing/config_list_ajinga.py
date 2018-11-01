@@ -18,6 +18,11 @@ ajinga = {
             'data': 'default/login-hr',
         },
         {
+            'name': 'login-emp',
+            'file': 'ajinga/login.json',
+            'data': 'default/login-emp',
+        },
+        {
             'name': 'ajing-293',
             'file': 'ajinga/login.json',
             'data': 'default/login-293',
@@ -142,10 +147,19 @@ ajinga_stage = {
             'data': 'stage/login-elc',
         },
         {
+            'name': 'comp-63',
+            'file': 'ajinga/login.json',
+            'data': 'stage/login-63',
+        },
+        {
             'name': 'jobstreet-login',
             'file': 'ajinga/jobstreet.json',
             'data': 'stage/main',
-        }
+        },
+        {
+            'name': 'replace-stage-file',
+            'file': 'ajinga/replace-stage.json',
+        },
     ],
 }
 
@@ -246,6 +260,11 @@ ajinga_prod = {
             'name': 'ajing-hr',
             'file': 'ajinga/login.json',
             'data': 'prod/login-hr',
+        },
+        {
+            'name': 'ajing-hr-15',
+            'file': 'ajinga/login.json',
+            'data': 'prod/login-ajinga15',
         },
         {
             'name': 'starbuckscn',

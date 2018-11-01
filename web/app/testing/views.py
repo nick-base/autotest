@@ -80,7 +80,10 @@ def run(request):
                 items = config[0]['items']
                 item = [i for i in items if i['name'] == name]
                 if item:
-                    param = (item[0]['file'], item[0]['data'])
+                    item = item[0]
+                    f = item['file'] if 'file' in item else ''
+                    d = item['data'] if 'data' in item else ''
+                    param = (f, d)
                     t = Test(param)
                     t.run()
         return HttpResponse("project: %s, group: %s, name: %s" % (project, group, name))
