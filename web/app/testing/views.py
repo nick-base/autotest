@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .core.test import Test
 from django.views.generic import View
+from django.http import JsonResponse
 
 from .config_list import config_list
 from .config_list_ajinga import config_list as aj_list
@@ -69,10 +70,13 @@ class DemoView(BaseView):
         return render(request, 'index.html', self.tempdict)
 
 def run(request):
+    import threading
     if request.method=='GET':
         project = request.GET.get('project')
         group = request.GET.get('group')
         name = request.GET.get('name')
+        run = request.GET.get('run')
+        data = {}
         if project:
             configs = config_map[project]
             config = [c for c in configs if c['name'] == group]
@@ -84,6 +88,20 @@ def run(request):
                     f = item['file'] if 'file' in item else ''
                     d = item['data'] if 'data' in item else ''
                     param = (f, d)
-                    t = Test(param)
-                    t.run()
-        return HttpResponse("project: %s, group: %s, name: %s" % (project, group, name))
+                    test = Test(param)
+                    if run == '1':
+                        thread_name = '%s-%s-%s' % (project, group, name)
+                        t = threading.Thread(target=test.run, name=thread_name)
+                        t.start()
+                        data = {
+                            "thread_name": thread_name,
+                            "data": test.data or '',
+                            "config": test.config,
+                        }
+                    else:
+                        print(test.data)
+                        data = {
+                            "data": test.data or '',
+                            "config": test.config,
+                        }
+        return JsonResponse(data)

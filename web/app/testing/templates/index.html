@@ -14,41 +14,47 @@
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/">Projects</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    {% for c in menus %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/{{ c }}">{{ c }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </nav>
-        <div id="accordion">
-            {% for grop in config_list %}
-                <div class="card">
-                    <div class="card-header" id="heading-{{ forloop.counter }}">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse-{{ forloop.counter }}">
-                            {{ grop.name }}
-                            </button>
-                        </h5>
-                    </div>
-
-                    <div id="collapse-{{ forloop.counter }}" class="collapse {% if forloop.counter == 1 %}show{% endif %}" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#accordion">
-                        <div class="card-body">
-                            {%  for config in grop.items %}
-                                <button type="button" class="btn btn-testing" data-project="{{ project }}" data-group="{{ grop.name }}" data-name="{{ config.name }}">{{ config.name }}</button>
+        <div class="row">
+            <div class="col col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="/">Projects</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            {% for c in menus %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/{{ c }}">{{ c }}</a>
+                            </li>
                             {% endfor %}
-                        </div>
+                        </ul>
                     </div>
+                </nav>
+                <div id="accordion">
+                    {% for grop in config_list %}
+                        <div class="card">
+                            <div class="card-header" id="heading-{{ forloop.counter }}">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse-{{ forloop.counter }}">
+                                    {{ grop.name }}
+                                    </button>
+                                </h5>
+                            </div>
+
+                            <div id="collapse-{{ forloop.counter }}" class="collapse {% if forloop.counter == 1 %}show{% endif %}" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#accordion">
+                                <div class="card-body">
+                                    {%  for config in grop.items %}
+                                    <button type="button" class="btn btn-testing" data-project="{{ project }}" data-group="{{ grop.name }}" data-name="{{ config.name }}">{{ config.name }}</button>
+                                    {% endfor %}
+                                    <pre class="result" style="display: none;">
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 </body>

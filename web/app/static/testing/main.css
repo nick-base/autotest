@@ -28,3 +28,31 @@
 #accordion .btn-link {
     color: #666;
 }
+
+pre {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #d6d8db;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.key {
+    color: #bd2130;
+}
+
+.string {
+    color: #0062cc;
+}
+
+.number {
+    color: #117a8b;
+}
+
+.boolean {
+    color: #1e7e34;
+}
+
+.null {
+    color: #d39e00;
+}

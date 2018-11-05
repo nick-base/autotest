@@ -67,7 +67,7 @@ class Test():
         print("[Config file]: %s" % config_file)
         self.config_path = os.path.abspath(os.path.dirname(config_file))
         self.config = load_json_file(config_file)
-        self.browser = self.get_browser(self.get_config("driver_path"))
+        print(self.get_config("data"))
         data = data or self.get_config("data")
         if data:
             self.data = self.load_data(data)
@@ -380,4 +380,5 @@ class Test():
 
                 time.sleep(SLEEP_TIME_BETWEEN_STEPS)
     def run(self):
+        self.browser = self.get_browser(self.get_config("driver_path"))
         self.run_steps(self.get_config("steps"))

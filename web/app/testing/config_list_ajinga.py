@@ -65,43 +65,6 @@ ajinga = {
     ],
 }
 
-common_dev = {
-    'name': 'common-dev',
-    'items': [
-        {
-            'name': 'ajinga-git',
-            'file': 'ajinga/ajinga-git.json',
-            'data': ''
-        },
-        {
-            'name': 'qqmail-dev',
-            'file': 'ajinga/qqmail-dev.json',
-            'data': ''
-        },
-        {
-            'name': 'qiniu-dev',
-            'file': 'ajinga/qiniu-dev.json',
-            'data': ''
-        },
-    ],
-}
-
-common_prod = {
-    'name': 'common-prod',
-    'items': [
-        {
-            'name': 'qqmail-prod',
-            'file': 'ajinga/qqmail-prod.json',
-            'data': ''
-        },
-        {
-            'name': 'qiniu-prod',
-            'file': 'ajinga/qiniu-prod.json',
-            'data': ''
-        },
-    ],
-}
-
 # stage.ajinga.com
 ajinga_stage = {
     'name': 'ajinga-stage',
@@ -157,9 +120,17 @@ ajinga_stage = {
             'data': 'stage/main',
         },
         {
-            'name': 'replace-stage-file',
-            'file': 'ajinga/replace-stage.json',
+            'name': 'replace-file',
+            'file': 'ajinga/stage-replace.json',
         },
+        {
+            'name': 'sync-log',
+            'file': 'ajinga/stage-sync-log.json',
+        },
+        {
+            'name': 'tail-log',
+            'file': 'ajinga/stage-tail-log.json',
+        }
     ],
 }
 
@@ -299,17 +270,6 @@ ajinga_prod = {
     ],
 }
 
-demo = {
-    'name': 'demo',
-    'items': [
-        {
-            'name': 'baidu-home',
-            'file': 'baidu/home.json',
-            'data': ''
-        },
-    ],
-}
-
 config_list = [
     ajinga,
     ajinga_local,
@@ -317,8 +277,4 @@ config_list = [
     ajinga_stage,
     ajinga_test,
     ajinga_prod,
-
-    # common_dev,
-    # common_prod,
-    # demo,
 ]

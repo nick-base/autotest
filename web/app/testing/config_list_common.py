@@ -8,13 +8,13 @@ common_dev = {
         },
         {
             'name': 'qqmail-dev',
-            'file': 'ajinga/qqmail-dev.json',
-            'data': ''
+            'file': 'ajinga/qqmail-login.json',
+            'data': 'dev/qq'
         },
         {
             'name': 'qiniu-dev',
-            'file': 'ajinga/qiniu-dev.json',
-            'data': ''
+            'file': 'ajinga/qiniu-login.json',
+            'data': 'dev/qiniu'
         },
     ],
 }
@@ -24,13 +24,13 @@ common_prod = {
     'items': [
         {
             'name': 'qqmail-prod',
-            'file': 'ajinga/qqmail-prod.json',
-            'data': ''
+            'file': 'ajinga/qqmail-login.json',
+            'data': 'prod/qq'
         },
         {
             'name': 'qiniu-prod',
-            'file': 'ajinga/qiniu-prod.json',
-            'data': ''
+            'file': 'ajinga/qiniu-login.json',
+            'data': 'prod/qiniu'
         },
     ],
 }
