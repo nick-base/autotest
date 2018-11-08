@@ -45,7 +45,7 @@ $(function() {
             data: data,
             dataType: "json",
             success: function(response) {
-                if (response) {
+                if (flag == 0 && response) {
                     var data = formatJson(response.data),
                         config = formatJson(response.config);
                     $('.result').hide()
