@@ -6,21 +6,8 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.select import Select
 
-from testing.settings import PROJECT_ROOT
-from testing.core.utils import load_json_file
-
-CONFIG_PATH = os.path.join(PROJECT_ROOT, "config")
-DRIVER_PATH = os.path.join(PROJECT_ROOT, "drivers")
-OUTPUT_PATH = os.path.join(PROJECT_ROOT, "output")
-
-COMPONENT_FILENAME = ["component", "plugs", "c", "p"]
-DATA_FILENAME = ["data", "d"]
-SCRIPT_FILENAME = ["script", "s"]
-SHELL_FILENAME = ["shell", "sh"]
-EXTENSION_NAME = ".json"
-
-LOAD_TIMEOUT = 5
-SLEEP_TIME_BETWEEN_STEPS = 1
+from auto.settings import *
+from auto.core.utils import load_json_file
 
 def get_driver_path(path):
     return os.path.join(DRIVER_PATH, path)
@@ -52,8 +39,6 @@ for k in OPERATION:
          ALL_OPERATIONS.append(OPERATION[k])
      else:
          ALL_OPERATIONS += OPERATION[k]
-
-SELECTOR_SEPARATOR = '#'
 
 class Test():
     def __init__(self, config):
