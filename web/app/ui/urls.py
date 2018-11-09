@@ -1,16 +1,12 @@
 from django.urls import path
 from . import views
 
-vs = {
-    '': views.HomeView,
-    'demo': views.DemoView,
-    'ajinga': views.AjingaView,
-    'common': views.CommonView,
-    'case': views.CaseView,
-}
-
 urlpatterns = [
-    path(v, vs[v].as_view(), name=v) for v in vs
+    path('', views.HomeView.as_view(), name=''),
+    path('demo', views.DemoView.as_view(), name='demo'),
+    path('ajinga', views.AjingaView.as_view(), name='ajinga'),
+    path('common', views.CommonView.as_view(), name='common'),
+    path('case', views.CaseView.as_view(), name='case'),
 ]
 
 urlpatterns += [

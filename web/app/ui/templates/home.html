@@ -8,7 +8,7 @@
     <title>Testing</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'testing/main.css' %}" rel="stylesheet">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="{% static 'testing/main.js' %}"></script>
@@ -16,7 +16,7 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/">Projects</a>
+            <a class="navbar-brand" href="/v/">Projects</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,7 +24,7 @@
                 <ul class="navbar-nav">
                     {% for c in menus %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="/{{ c }}">{{ c }}</a>
+                        <a class="nav-link" href="/v/{{ c }}">{{ c }}</a>
                     </li>
                     {% endfor %}
                 </ul>

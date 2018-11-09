@@ -41,7 +41,7 @@ $(function() {
 
         $.ajax({
             type: "GET",
-            url: "/run",
+            url: "/v/run",
             data: data,
             dataType: "json",
             success: function(response) {
