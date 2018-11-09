@@ -43,7 +43,7 @@ class AjingaView(BaseView):
             "project": "ajinga",
             "config_list": aj_list
         })
-        return render(request, "index.html", self.tempdict)
+        return render(request, "main.html", self.tempdict)
 
 class CommonView(BaseView):
     def get(self, request, *args, **kwargs):
@@ -51,7 +51,7 @@ class CommonView(BaseView):
             "config_list": common_list,
             "project": "common",
         })
-        return render(request, "index.html", self.tempdict)
+        return render(request, "main.html", self.tempdict)
 
 class CaseView(BaseView):
     def get(self, request, *args, **kwargs):
@@ -59,7 +59,7 @@ class CaseView(BaseView):
             "config_list": case_list,
             "project": "case",
         })
-        return render(request, "index.html", self.tempdict)
+        return render(request, "main.html", self.tempdict)
 
 class DemoView(BaseView):
     def get(self, request, *args, **kwargs):
@@ -67,7 +67,7 @@ class DemoView(BaseView):
             "config_list": config_list,
             "project": "demo",
         })
-        return render(request, "index.html", self.tempdict)
+        return render(request, "main.html", self.tempdict)
 
 def run(request):
     import threading
