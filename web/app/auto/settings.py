@@ -2,9 +2,9 @@ import os
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-CONFIG_PATH = os.path.join(ROOT_PATH, "config")
-DRIVER_PATH = os.path.join(ROOT_PATH, "drivers")
-OUTPUT_PATH = os.path.join(ROOT_PATH, "output")
+# CONFIG_PATH = os.path.join(ROOT_PATH, "config")
+# DRIVER_PATH = os.path.join(ROOT_PATH, "drivers")
+# OUTPUT_PATH = os.path.join(ROOT_PATH, "output")
 
 COMPONENT_FILENAME = ["component", "plugs", "c", "p"]
 DATA_FILENAME = ["data", "d"]

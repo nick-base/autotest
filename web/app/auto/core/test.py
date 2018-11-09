@@ -9,9 +9,6 @@ from selenium.webdriver.support.select import Select
 from auto.settings import *
 from auto.core.utils import load_json_file
 
-def get_driver_path(path):
-    return os.path.join(DRIVER_PATH, path)
-
 OPERATION = {
     "operation": ["operation", "op", "do"],
     "get": "get",
@@ -41,23 +38,36 @@ for k in OPERATION:
          ALL_OPERATIONS += OPERATION[k]
 
 class Test():
-    def __init__(self, config):
+    def __init__(self, config, root_path=ROOT_PATH):
+        self.init_path(root_path)
+
         if type(config) == tuple:
             config_filename, data = config
+        elif type(config) == dict:
+            config_filename = config["file"]
+            data = config["data"]
         else:
             config_filename = config
             data = None
 
-        config_file = os.path.join(CONFIG_PATH, config_filename)
+        config_file = os.path.join(self.CONFIG_PATH, config_filename)
         print("[Config file]: %s" % config_file)
         self.config_path = os.path.abspath(os.path.dirname(config_file))
         self.config = load_json_file(config_file)
+
         print(self.get_config("data"))
         data = data or self.get_config("data")
         if data:
             self.data = self.load_data(data)
         else:
             self.data = {}
+
+    def init_path(self, root_path):
+        if root_path:
+            root_path = ROOT_PATH
+        self.CONFIG_PATH = os.path.join(root_path, "config")
+        self.DRIVER_PATH = os.path.join(root_path, "drivers")
+        self.OUTPUT_PATH = os.path.join(root_path, "output")
 
     def get_config(self, key):
         if key and key in self.config:
@@ -77,8 +87,8 @@ class Test():
             print(path)
             if os.path.isfile(path):
                 data = load_json_file(path)
-                print('[data path]: %s' % path)
-                print('[data]: %s' % data)
+                print("[data path]: %s" % path)
+                print("[data]: %s" % data)
                 return data
         return {}
 
@@ -87,7 +97,7 @@ class Test():
             path = os.path.join(self.config_path, s, name)
             if os.path.isfile(path):
                 with open(path) as f:
-                    script = f.read().strip('\n')
+                    script = f.read().strip("\n")
                 return script
         return ""
 
@@ -95,29 +105,32 @@ class Test():
         for sh in SHELL_FILENAME:
             path = os.path.join(self.config_path, sh, name)
             if os.path.isfile(path):
-                print('[shell]: %s' % path)
+                print("[shell]: %s" % path)
                 return path
         return None
 
     def get_browser(self, name):
-        driver = self.get_config('driver') and self.get_config('driver').lower() or "chrome"
+        driver = self.get_config("driver") and self.get_config("driver").lower() or "chrome"
         if driver == "chrome":
             from selenium.webdriver.chrome.webdriver import WebDriver
         elif driver == "firefox":
             from selenium.webdriver.firefox.webdriver import WebDriver
 
-        driver_path = self.get_config('driver_path')
+        driver_path = self.get_config("driver_path")
         if driver_path:
-            browser = WebDriver(executable_path = get_driver_path(driver_path))
+            browser = WebDriver(executable_path = self.get_driver_path(driver_path))
             browser.maximize_window()
             # browser.set_page_load_timeout(LOAD_TIMEOUT)
             # browser.set_script_timeout(LOAD_TIMEOUT)
             return browser
         return None
 
+    def get_driver_path(self, path):
+        return os.path.join(self.DRIVER_PATH, path)
+
     def get_elem(self, selector):
         selector_type, target = selector.split(SELECTOR_SEPARATOR)
-        if selector_type == 'id':
+        if selector_type == "id":
             elem = self.browser.find_element_by_id(target)
         if selector_type == "class":
             elem = self.browser.find_element_by_class_name(target)
@@ -179,7 +192,7 @@ class Test():
         # try:
         #     self.browser.get(url)
         # except:
-        #     self.browser.execute_script('window.stop()')
+        #     self.browser.execute_script("window.stop()")
 
     def do_input(self, step, is_standard=False):
         data = {}
@@ -261,9 +274,9 @@ class Test():
         screenshot = self.get_config("screenshot")
         if not screenshot:
             return
-        if screenshot.startswith('#'):
-            screenshot = self.data[screenshot.lstrip('#')]
-        data_path = os.path.join(OUTPUT_PATH, screenshot)
+        if screenshot.startswith("#"):
+            screenshot = self.data[screenshot.lstrip("#")]
+        data_path = os.path.join(self.OUTPUT_PATH, screenshot)
         if  not os.path.exists(data_path):
             os.makedirs(data_path)
 
@@ -345,14 +358,14 @@ class Test():
                 elif operation == OPERATION["script"]:
                     script = self.get_script(step["script"])
                     self.browser.execute_script(script)
-                    print('[script]: %s' % script)
+                    print("[script]: %s" % script)
 
                 elif operation == OPERATION["scripts"]:
                     self.browser.execute_script(step["scripts"])
-                    print('[scripts]: %s' % script)
+                    print("[scripts]: %s" % script)
 
                 elif operation == OPERATION["switch_to_frame"]:
-                    self.browser.switch_to_frame(self.get_elem(step['frame']))
+                    self.browser.switch_to_frame(self.get_elem(step["frame"]))
 
                 elif operation == OPERATION["switch_to_default_content"]:
                     self.browser.switch_to_default_content()
@@ -364,6 +377,7 @@ class Test():
                     self.do_sleep(step, is_standard)
 
                 time.sleep(SLEEP_TIME_BETWEEN_STEPS)
+
     def run(self):
         self.browser = self.get_browser(self.get_config("driver_path"))
         self.run_steps(self.get_config("steps"))
