@@ -37,6 +37,10 @@ for k in OPERATION:
      else:
          ALL_OPERATIONS += OPERATION[k]
 
+def p(str1, str2):
+    print('\033[1;35m%s:\033[0m %s' % (str1, str2))
+
+
 class Test():
     def __init__(self, config, root_path=ROOT_PATH):
         self.init_path(root_path)
@@ -51,11 +55,11 @@ class Test():
             data = None
 
         config_file = os.path.join(self.CONFIG_PATH, config_filename)
-        print("[Config file]: %s" % config_file)
+        p("[Config file]", config_file)
         self.config_path = os.path.abspath(os.path.dirname(config_file))
         self.config = load_json_file(config_file)
 
-        print(self.get_config("data"))
+        p("[Config data]", self.get_config("data"))
         data = data or self.get_config("data")
         if data:
             self.data = self.load_data(data)
@@ -84,11 +88,10 @@ class Test():
     def load_data(self, name):
         for d in DATA_FILENAME:
             path = os.path.join(self.config_path, d, "%s%s" % (name, EXTENSION_NAME))
-            print(path)
             if os.path.isfile(path):
                 data = load_json_file(path)
-                print("[data path]: %s" % path)
-                print("[data]: %s" % data)
+                p("[data path]", path)
+                p("[data]", data)
                 return data
         return {}
 
@@ -105,7 +108,7 @@ class Test():
         for sh in SHELL_FILENAME:
             path = os.path.join(self.config_path, sh, name)
             if os.path.isfile(path):
-                print("[shell]: %s" % path)
+                p("[shell]", path)
                 return path
         return None
 
@@ -187,7 +190,7 @@ class Test():
                 url = step["get"]
             else:
                 url = get_url(step["get"][1::])
-        print("[GET]: %s" % url)
+        p("[GET]", url)
         self.browser.get(url)
         # try:
         #     self.browser.get(url)
@@ -210,7 +213,7 @@ class Test():
                 if variable_name in self.data:
                     data = self.data[variable_name]
         self.fill_data(data)
-        print("[input]: %s" % data)
+        p("[input]", data)
 
     def do_select(self, step, is_standard):
         try:
@@ -248,10 +251,9 @@ class Test():
             elif text:
                 s.select_by_visible_text(text)
 
-            print(value, text, index)
-            print("[Select]: %s" % target)
+            p("[Select]", target)
         except:
-            print("[Error]: select %s" % target)
+            p("[Error select]", target)
 
     def do_click(self, step, is_standard=False):
         elem = None
@@ -267,7 +269,7 @@ class Test():
             try:
                 self.get_elem(elem).click()
             except Exception as e:
-                print("[Click Error]: %s" % elem)
+                p("[Click Error]", elem)
                 print(e)
 
     def do_screenshot(self, step, is_standard):
@@ -322,7 +324,7 @@ class Test():
                 if operation == OPERATION["shell"]:
                     sh = self.get_shell_path(step["sh"])
                     if sh:
-                        print("[shell]: %s" % sh)
+                        p("[shell]", sh)
                         os.system(sh)
 
                 elif operation == OPERATION["stop"]:
@@ -358,11 +360,11 @@ class Test():
                 elif operation == OPERATION["script"]:
                     script = self.get_script(step["script"])
                     self.browser.execute_script(script)
-                    print("[script]: %s" % script)
+                    p("[script]", script)
 
                 elif operation == OPERATION["scripts"]:
                     self.browser.execute_script(step["scripts"])
-                    print("[scripts]: %s" % script)
+                    p("[scripts]", script)
 
                 elif operation == OPERATION["switch_to_frame"]:
                     self.browser.switch_to_frame(self.get_elem(step["frame"]))
