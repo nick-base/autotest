@@ -18,7 +18,7 @@ export default new Router({
       component: Auto
     },
     {
-      path: '/project/:project/:sub',
+      path: '/sub/:project/:sub',
       name: 'sub',
       component: Auto
     },

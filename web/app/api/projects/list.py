@@ -4,6 +4,6 @@ from .common import common
 
 projects = [
     aj,
-    baidu,
-    common
+    # baidu,
+    common,
 ]

@@ -21,7 +21,6 @@
 
 <script>
 import axios from 'axios';
-import Data from './data/data';
 
 export default {
   name: 'app',
@@ -35,19 +34,22 @@ export default {
     axios.get('http://127.0.0.1:8000/api/test')
       .then(function (response) {
          self.projects = response.data;
-         console.log(self.projects);
       });
   }
 }
 </script>
 
-<style scoped>
+<style>
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #app {
@@ -62,6 +64,20 @@ body {
   height: 100%;
 }
 
+#app:before {
+  content: '';
+  background: url('./assets/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -100;
+}
+
 #app .main-l
 {
   width: 250px;
@@ -73,6 +89,8 @@ body {
 
 #app .nav-top {
   height: 50px;
+  padding-left: 50px;
+  margin-bottom: 30px;
 }
 
 #app .main-l .level1-title,
@@ -90,15 +108,33 @@ body {
   padding-left: 40px;
 }
 
-
 #app .main-l a {
   display: inline-block;
   width: 100%;
 }
 
-a.router-link-exact-active {
-  color: #42b983;
-  background: #e0eefa;
+#app .main-l {
+  background: #f7f7f7;
 }
 
+#app .main-l .nav-top {
+  background: #5a863c;
+}
+
+#app .main-r .nav-top {
+  background: #669844;
+}
+
+#app .main-l a {
+  text-decoration: none;
+}
+
+#app .main-l a:active {
+  color: #9cc;
+}
+
+a.router-link-exact-active {
+  color: #fff;
+  background: #6cc;
+}
 </style>
