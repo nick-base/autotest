@@ -31,7 +31,7 @@ export default {
   },
   created() {
     let self = this;
-    axios.get('http://127.0.0.1:8000/api/test')
+    axios.get('http://127.0.0.1:8081/api/getlist')
       .then(function (response) {
          self.projects = response.data;
       });
@@ -66,7 +66,7 @@ body {
 
 #app:before {
   content: '';
-  background: url('./assets/bg.jpg');
+  background: url('./assets/bg1.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
@@ -127,10 +127,11 @@ body {
 
 #app .main-l a {
   text-decoration: none;
+  color: #369;
 }
 
 #app .main-l a:active {
-  color: #9cc;
+  color: #369;
 }
 
 a.router-link-exact-active {

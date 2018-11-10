@@ -7,8 +7,8 @@
       {{ project.name }}<span class="lower">{{ project.description }}</span>
     </div>
     <div class="main">
-      <div v-if="sub_name" class="sub-line" v-for="c in sub_case" @click="send">
-        <span>{{ c.name }}</span>
+      <div v-if="sub_name" class="sub-line" v-for="c in sub_case" @click="send(c.name)">
+        {{ c.name }}
       </div>
     </div>
   </div>
@@ -38,8 +38,17 @@ export default {
     }
   },
   methods: {
-    send (event) {
-      console.log(this.project_name, this.sub_name, event.target.innerHTML)
+    send (name) {
+      let params = {
+        'project': this.project_name,
+        'sub': this.sub_name,
+        'case': name
+      };
+      axios.get('http://127.0.0.1:8081/api/run', {
+        params: params
+      }).then(function (response) {
+         console.log(response.data)
+      });
     },
     refresh() {
       this.project_name = this.$route.params.project;
@@ -50,7 +59,7 @@ export default {
         this.sub_case = {}
       }
       let self = this;
-      axios.get('http://127.0.0.1:8000/api/test')
+      axios.get('http://127.0.0.1:8081/api/getlist')
         .then(function (response) {
           let project = response.data.find(function(project) {
             return project.name == self.project_name;
@@ -88,12 +97,19 @@ export default {
   margin-left: 30px;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 86vh;
+}
+
 .sub-line {
   line-height: 45px;
   height: 45px;
   padding-left: 20px;
   text-align: left;
-  margin: 5px 30px 5px 10px;
+  margin: 5px 0 5px 15px;
   background: #fff;
   border-radius: 5px;
   width: 300px;
