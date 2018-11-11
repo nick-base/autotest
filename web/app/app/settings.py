@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    'localhost',
+    '10.0.2.15',
 ]
 
 # Application definition
@@ -139,4 +141,6 @@ STATICFILES_DIRS = [
 
 CORS_ORIGIN_WHITELIST = (
       'localhost:8080',
+      '127.0.0.1:8080',
+      '10.0.2.15:8080'
 )
