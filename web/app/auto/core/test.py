@@ -67,10 +67,10 @@ class Test():
             self.data = {}
 
     def init_path(self, root_path):
-        if root_path:
+        self.DRIVER_PATH = os.path.join(ROOT_PATH, "drivers")
+        if not root_path:
             root_path = ROOT_PATH
         self.CONFIG_PATH = os.path.join(root_path, "config")
-        self.DRIVER_PATH = os.path.join(root_path, "drivers")
         self.OUTPUT_PATH = os.path.join(root_path, "output")
 
     def get_config(self, key):

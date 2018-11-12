@@ -1,12 +1,12 @@
 localhost = [
     {
-        'name': 'register',
-        'file': 'ajinga/register.json',
+        'name': 'login',
+        'file': 'ajinga/login.json',
         'data': 'default/main',
     },
     {
-        'name': 'login',
-        'file': 'ajinga/login.json',
+        'name': 'register',
+        'file': 'ajinga/register.json',
         'data': 'default/main',
     },
     {

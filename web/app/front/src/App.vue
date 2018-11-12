@@ -3,11 +3,11 @@
     <div class="main-l">
       <div class="nav-top"></div>
       <div class="level1" v-for="project in projects">
-        <router-link class="level1-title" :to="{ name: 'project', params: { project: project.name }}">
+        <router-link class="level1-title" v-bind:title="project.description" :to="{ name: 'project', params: { project: project.name }}">
           {{ project.name }}
         </router-link>
           <div class="level2" v-for="sub in project.sub">
-            <router-link class="level2-title" :to="{ name: 'sub', params: { project: project.name, sub: sub.name }}">
+            <router-link class="level2-title" v-bind:title="sub.display" :to="{ name: 'sub', params: { project: project.name, sub: sub.name }}">
               {{ sub.name }}
             </router-link>
           </div>

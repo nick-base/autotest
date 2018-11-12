@@ -37,7 +37,7 @@ def run(request):
                         if case:
                             case = case[0]
         if case:
-            test = Test(case)
+            test = Test(case, root_path=project['root_path'])
 
         if run == "0":
             data = {
