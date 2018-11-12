@@ -25,4 +25,5 @@ class Case(Model):
     display = models.TextField(null=True, blank=True)
     file_name = models.TextField(null=True, blank=True)
     data = models.TextField(null=True, blank=True)
+    disable = models.IntegerField(default = 0)
     project = models.ForeignKey('Project', null = True, related_name = 'cases', on_delete=models.SET_NULL)

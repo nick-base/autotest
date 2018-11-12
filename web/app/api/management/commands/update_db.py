@@ -6,6 +6,9 @@ class Command(BaseCommand):
     help = 'Update Config to database'
 
     def handle(self, *args, **options):
+        g_ids = []
+        p_ids = []
+        c_ids = []
         for g in groups:
             name = 'name' in g and g['name'] or ''
             description = 'description' in g and g['description'] or ''
@@ -21,6 +24,7 @@ class Command(BaseCommand):
             group.disable = disable
             group.root_path = root_path
             group.save()
+            g_ids.append(group.pk)
             if 'sub' in g:
                 for p in g['sub']:
                     name = 'name' in p and p['name'] or ''
@@ -37,7 +41,7 @@ class Command(BaseCommand):
                     project.disable = disable
                     project.group = group
                     project.save()
-                    print(project.pk)
+                    p_ids.append(project.pk)
                     if 'case' in p:
                         for c in p['case']:
                             name = 'name' in c and c['name'] or ''
@@ -54,3 +58,7 @@ class Command(BaseCommand):
                             case.data = data
                             case.project = project
                             case.save()
+                            c_ids.append(case.pk)
+        Group.objects.exclude(id__in=g_ids).update(disable=1)
+        Project.objects.exclude(id__in=p_ids).update(disable=1)
+        Case.objects.exclude(id__in=c_ids).update(disable=1)
