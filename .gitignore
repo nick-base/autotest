@@ -1,8 +1,8 @@
 __pycache__/
 *.pyc
-*.png
 *.log
 
 ajinga-v1/
 ajinga/
 ajinga-case/
+output/
