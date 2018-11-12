@@ -1,3 +1,4 @@
 common = {
-  'name': 'Common'
+  'name': 'Common',
+  'description': 'Common'
 }

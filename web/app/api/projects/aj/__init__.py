@@ -8,7 +8,7 @@ aj = {
     "name": "Ajinga",
     "description": "菁客招聘",
     "disable": False,
-    "root_path": "/home/nick/nick/my-config",
+    "root_path": "",
     "sub": [
         {
             "name": "Localhost",

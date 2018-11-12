@@ -1,3 +1,4 @@
 baidu = {
-  "name": "Baidu"
+  "name": "Baidu",
+  "description": "百度"
 }
