@@ -27,3 +27,8 @@ class Case(Model):
     data = models.TextField(null=True, blank=True)
     disable = models.IntegerField(default = 0)
     project = models.ForeignKey('Project', null = True, related_name = 'cases', on_delete=models.SET_NULL)
+
+from django.contrib import admin
+admin.site.register(Group)
+admin.site.register(Project)
+admin.site.register(Case)
