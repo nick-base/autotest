@@ -34,4 +34,14 @@ test = [
         'file': 'ajinga/login.json',
         'data': 'test/login-elc',
     },
+    {
+        'name': 'survey',
+        'file': 'ajinga/survey-right.json',
+        'data': 'test/main',
+    },
+    {
+        'name': 'login-survey',
+        'file': 'ajinga/login-survey-right.json',
+        'data': 'test/main',
+    },
 ]

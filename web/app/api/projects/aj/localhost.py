@@ -20,6 +20,11 @@ localhost = [
         'data': 'default/login-emp',
     },
     {
+        'name': 'login-accor',
+        'file': 'ajinga/login.json',
+        'data': 'default/login-accor',
+    },
+    {
         'name': 'ajing-293',
         'file': 'ajinga/login.json',
         'data': 'default/login-293',
