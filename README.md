@@ -9,6 +9,7 @@
  - Pyhton 3.5
  - Django 2.1.2
  - Selenium 3.14.0
+ - Vue 3.0.5
 
 #### 实现思路
 
