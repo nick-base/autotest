@@ -49,7 +49,7 @@ class Test():
             config_filename, data = config
         elif type(config) == dict:
             config_filename = config["file"]
-            data = config["data"]
+            data = config["data"] if "data" in config else None
         else:
             config_filename = config
             data = None
