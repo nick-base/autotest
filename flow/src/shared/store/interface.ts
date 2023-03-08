@@ -4,4 +4,5 @@ export interface GlobalState {
   members: {
     showDetail: boolean;
   };
+  formValues: any;
 }

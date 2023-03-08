@@ -8,6 +8,7 @@ const initialState: GlobalState = {
   members: {
     showDetail: false,
   },
+  formValues: null,
 };
 
 const name = 'global';
@@ -27,6 +28,9 @@ export const slice = createSlice({
     increment: (state, action: PayloadAction<number>) => {
       state.counter += action.payload || 1;
     },
+    setFormValues: (state, action: PayloadAction<any>) => {
+      state.formValues = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -45,6 +49,8 @@ export const timeStampSelecter = (state: AppState) => state.global.timeStamp;
 
 export const showDetailSelecter = (state: AppState) => state.global.members.showDetail;
 
+export const formValuesSelecter = (state: AppState) => state.global.formValues;
+
 export const incrementIfOdd =
   (amount: number): AppThunk =>
   (dispatch, getState) => {
@@ -54,6 +60,6 @@ export const incrementIfOdd =
     }
   };
 
-export const { increment, setShowDetail } = slice.actions;
+export const { increment, setShowDetail, setFormValues } = slice.actions;
 
 export default slice.reducer;
