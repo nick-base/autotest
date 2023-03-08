@@ -1,0 +1,18 @@
+.page {
+  padding: 0 0 30px 20px;
+  display: flex;
+}
+
+.header {
+  padding: 15px;
+}
+
+.frame {
+  width: 375px;
+  height: 667px;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+}

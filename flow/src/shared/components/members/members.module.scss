@@ -1,0 +1,21 @@
+.members {
+  padding: 0 10px;
+
+  .checkbox-group {
+    display: block;
+  }
+
+  .member {
+    .title {
+      color: #f00;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 5px 0;
+    }
+
+    tr td {
+      font-size: 14px;
+      padding: 2px 0 2px 0;
+    }
+  }
+}

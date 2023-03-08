@@ -1,0 +1,7 @@
+@function r($px) {
+  @if $px != 0 {
+    @return $px / 100 * 1rem;
+  } @else {
+    @return 0;
+  }
+}

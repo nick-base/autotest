@@ -1,0 +1,6 @@
+{
+  "watch": ["server", "shared"],
+  "delay": 1000,
+  "exec": "cross-env NODE_ENV=development PORT=3001 PURE_MODE=1 ts-node --project server/tsconfig.json server/index.ts",
+  "ext": "js ts"
+}

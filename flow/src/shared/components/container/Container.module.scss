@@ -1,0 +1,13 @@
+.container {
+  flex-direction: row;
+  height: 100vh;
+
+  .sider {
+    height: 100vh;
+  }
+
+  .content {
+    height: 100vh;
+    overflow-y: scroll;
+  }
+}

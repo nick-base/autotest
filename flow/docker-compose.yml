@@ -1,0 +1,25 @@
+version: '3'
+services:
+  # redis:
+  #   container_name: "${COMPOSE_PROJECT_NAME}-redis"
+  #   restart: always
+  #   image: redis:4
+  #   ports:
+  #     - 6379:6379
+  #   command:
+  #     redis-server
+
+  mongodb:
+    image: mongo
+    container_name: "${COMPOSE_PROJECT_NAME}-mongodb"
+    ports:
+      - 27017:27017
+    command: mongod --auth
+    tty: true
+    volumes:
+      - ./database:/data/db
+    environment:
+      - TZ=Asia/Shanghai
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_DATABASE=testdb
