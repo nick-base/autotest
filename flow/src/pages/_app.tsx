@@ -1,4 +1,5 @@
 import 'antd/dist/antd.css';
+import '@/components/formily-antd/style.css';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';

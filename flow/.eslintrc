@@ -8,6 +8,7 @@
   "plugins": ["prettier"],
   "root": true,
   "rules": {
-    "prettier/prettier": "warn"
+    "prettier/prettier": "warn",
+    "react/display-name": "off"
   }
 }
