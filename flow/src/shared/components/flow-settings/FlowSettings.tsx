@@ -71,6 +71,9 @@ const FLowSettings = () => {
   }, [list]);
 
   const form = useMemo(() => {
+    setCurrent(formValues);
+    setSelectId(formValues?.id);
+
     return createForm({
       validateFirst: true,
       initialValues: formValues,
@@ -105,7 +108,7 @@ const FLowSettings = () => {
   };
 
   const save = (add = false) => {
-    const data = form.values;
+    const data = { ...form.values };
     if (add) {
       delete data.id;
     }
@@ -141,7 +144,7 @@ const FLowSettings = () => {
       <AntdSelect
         onChange={(id) => setSelectId(id)}
         onClear={() => {
-          const data = form.values;
+          const data = { ...(form.values || {}) };
           delete data.id;
           form.setInitialValues(data);
           setCurrent(data);

@@ -4,6 +4,20 @@
       {
         "type": "goto",
         "url": "https://i-test.zhongan.com/d7YPjO"
+      },
+      {
+        "type": "focus",
+        "selector": "div[data-ilog=\"投保人手机号\"] input"
+      },
+      {
+        "type": "type",
+        "selector": "div[data-ilog=\"投保人手机号\"] input",
+        "typeData": "18317857608"
+      },
+      {
+        "type": "type",
+        "typeData": "8888",
+        "selector": "div[data-ilog=\"投保人验证码\"] input"
       }
     ],
     "name": "魔方2022",

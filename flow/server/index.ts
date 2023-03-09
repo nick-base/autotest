@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 import next from 'next';
 import { loadEnvConfig } from '@next/env';
 import Koa from 'koa';
@@ -10,6 +10,13 @@ loadEnvConfig(process.cwd());
 
 const dev = process.env.NODE_ENV !== 'production';
 const pure = process.env.PURE_MODE === '1';
+if (pure) {
+  console.info('纯净模式: 无webdriver ====>');
+}
+puppeteer.defaultArgs({
+  args: ['--disable-features=SameSiteByDefaultCookies', '--disable-web-security', '--disable-setuid-sandbox'],
+});
+
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -29,8 +36,8 @@ app.prepare().then(() => {
     const server = new Koa();
     const router = require('./modules/routers').default;
 
-    let browser;
-    let page;
+    let browser: Browser;
+    let page: Page;
 
     const boot = async ({ init }) => {
       if (pure) return;
@@ -81,6 +88,13 @@ app.prepare().then(() => {
     server.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
       ctx.res.statusCode = 200;
       await next();
+    });
+
+    process.once('SIGUSR2', function () {
+      console.info('restart::auto');
+      browser && browser.close();
+      page = null;
+      browser = null;
     });
 
     const port = parseInt(process.env.PORT || '3000', 10);

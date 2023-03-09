@@ -76,6 +76,46 @@ export const schema: ISchema = {
                   },
                 },
               },
+              selector: {
+                type: 'string',
+                title: '选择器',
+                required: true,
+                'x-decorator': 'FormItem',
+                'x-component': 'Input',
+                'x-component-props': {
+                  style: {
+                    width: 400,
+                  },
+                },
+                'x-reactions': {
+                  dependencies: ['.type'],
+                  fulfill: {
+                    state: {
+                      visible: '{{["click", "type", "focus"].includes($deps[0])}}',
+                    },
+                  },
+                },
+              },
+              typeData: {
+                type: 'string',
+                title: '输入内容',
+                required: true,
+                'x-decorator': 'FormItem',
+                'x-component': 'Input',
+                'x-component-props': {
+                  style: {
+                    width: 400,
+                  },
+                },
+                'x-reactions': {
+                  dependencies: ['.type'],
+                  fulfill: {
+                    state: {
+                      visible: '{{["type"].includes($deps[0])}}',
+                    },
+                  },
+                },
+              },
             },
           },
           remove: {
