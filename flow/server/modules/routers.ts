@@ -37,6 +37,7 @@ router.post('/api/simulator/save', koaBody(), async (ctx) => {
     ctx.body = {
       code: 0,
       message: '保存成功',
+      data: target,
     };
   } catch (err) {
     console.info(err);
@@ -44,6 +45,28 @@ router.post('/api/simulator/save', koaBody(), async (ctx) => {
       code: 50001,
       message: '服务器异常',
       err: err.message,
+    };
+  }
+});
+
+router.get('/api/simulator/list', async (ctx) => {
+  const path = './server/data/simulators.json';
+
+  try {
+    const data: any[] = JSON.parse(readFileSync(path)) || [];
+
+    ctx.body = {
+      code: 0,
+      message: '保存成功',
+      data,
+    };
+  } catch (err) {
+    console.info(err);
+    ctx.body = {
+      code: 50001,
+      message: '服务器异常',
+      err: err.message,
+      data: [],
     };
   }
 });

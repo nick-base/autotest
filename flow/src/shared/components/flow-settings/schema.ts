@@ -4,6 +4,19 @@ import { OPETATION_TPYE } from './data';
 export const schema: ISchema = {
   type: 'object',
   properties: {
+    id: {
+      type: 'string',
+      title: '流程ID',
+      required: false,
+      'x-disabled': true,
+      'x-decorator': 'FormItem',
+      'x-component': 'Input',
+      'x-component-props': {
+        style: {
+          width: 400,
+        },
+      },
+    },
     steps: {
       type: 'array',
       required: true,
@@ -77,6 +90,18 @@ export const schema: ISchema = {
           type: 'void',
           title: '新增',
           'x-component': 'ArrayItems.Addition',
+        },
+      },
+    },
+    name: {
+      type: 'string',
+      title: '流程名称',
+      required: true,
+      'x-decorator': 'FormItem',
+      'x-component': 'Input',
+      'x-component-props': {
+        style: {
+          width: 400,
         },
       },
     },
