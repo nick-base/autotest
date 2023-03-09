@@ -58,7 +58,7 @@ export const schema: ISchema = {
                   dependencies: ['.type'],
                   fulfill: {
                     state: {
-                      visible: '{{$deps[0] === 1}}',
+                      visible: '{{$deps[0] === "goto"}}',
                     },
                   },
                 },

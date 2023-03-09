@@ -2,7 +2,9 @@ import puppeteer from 'puppeteer';
 import next from 'next';
 import { loadEnvConfig } from '@next/env';
 import Koa from 'koa';
+import koaBody from 'koa-body';
 const detect = require('detect-port');
+import { execute } from './modules/simulator';
 
 loadEnvConfig(process.cwd());
 
@@ -17,9 +19,10 @@ const UA = {
 };
 
 const urls = {
-  server: 'http://localhost:3001/',
   insureDemo: 'https://i-test.zhongan.com/2D8Cnr',
 };
+
+let serverAddress = 'http://localhost:3001/';
 
 app.prepare().then(() => {
   (async () => {
@@ -57,15 +60,14 @@ app.prepare().then(() => {
         page = null;
         browser = null;
       });
-      !init && (await page.goto(urls.server));
+      !init && (await page.goto(serverAddress));
     };
     await boot({ init: true });
 
     if (!pure) {
-      router.get('/api/test', async () => {
+      router.post('/api/simulator/execute', koaBody(), async (ctx) => {
         await boot({ init: false });
-        const frame = page.frames().find((frame) => frame.name() === 'iframe-1');
-        await frame.goto(urls.insureDemo);
+        await execute(ctx, { browser, page });
       });
     }
 
@@ -87,7 +89,8 @@ app.prepare().then(() => {
       server.listen(port, () => {
         console.log(`> Ready on http://localhost:${port}`);
       });
-      !pure && page.goto(urls.server);
+      serverAddress = `http://localhost:${port}/`;
+      !pure && page.goto(serverAddress);
     });
   })();
 });

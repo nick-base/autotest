@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Card, Button, Spin } from 'antd';
+import { Card, Spin, message } from 'antd';
 import { createForm, onFormInputChange } from '@formily/core';
 import { createSchemaField } from '@formily/react';
 import {
@@ -58,12 +58,35 @@ const FLowSettings = () => {
   }, [formValues === null]);
 
   const execute = () => {
-    fetch('/api/testing/execute', {
+    fetch('/api/simulator/execute', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(form.values),
+    })
+      .then((res) => {
+        const { status } = res;
+        if (status === 404) {
+          message.error('纯净模式不支持该操作！');
+        }
+      })
+      .catch((res) => {
+        message.error(res);
+      });
+  };
+
+  const save = () => {
+    const data = {
+      data: form.values,
+      id: null,
+    };
+    fetch('/api/simulator/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     });
   };
 
@@ -73,11 +96,14 @@ const FLowSettings = () => {
         display: 'flex',
         justifyContent: 'center',
       }}>
-      <Card title="操作步骤" style={{ width: '100%' }}>
+      <Card title="配置" style={{ width: '100%' }}>
         <Spin spinning={false}>
           <Form form={form} labelCol={5} wrapperCol={16} onAutoSubmit={console.log}>
             <SchemaField schema={schema} />
             <FormButtonGroup.FormItem>
+              <Submit block size="large" onClick={save}>
+                保存
+              </Submit>
               <Submit block size="large" onClick={execute}>
                 执行
               </Submit>
