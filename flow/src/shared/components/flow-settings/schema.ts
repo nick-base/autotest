@@ -2,22 +2,9 @@ import { ISchema } from '@formily/json-schema';
 import { OPETATION_TPYE } from './data';
 
 export const schema: ISchema = {
-  type: 'object',
-  properties: {
-    id: {
-      type: 'string',
-      title: '流程ID',
-      required: false,
-      'x-disabled': true,
-      'x-decorator': 'FormItem',
-      'x-component': 'Input',
-      'x-component-props': {
-        style: {
-          width: 400,
-        },
-      },
-    },
+  definitions: {
     steps: {
+      definitions: 'steps',
       type: 'array',
       required: true,
       title: '步骤',
@@ -34,14 +21,23 @@ export const schema: ISchema = {
           },
           step: {
             type: 'void',
-            'x-component': 'FormItem',
+            'x-component': 'FormLayout',
             'x-component-props': {
-              layout: 'vertical',
+              layout: 'horizontal',
+              labelWidth: 100,
+              wrapperWidth: 500,
+              labelAlign: 'left',
             },
             properties: {
               title: {
                 title: '{{"步骤" + ($self.index + 1)}}',
                 'x-component': 'FormItem',
+                'x-component-props': {
+                  labelStyle: {
+                    color: 'red',
+                    fontWeight: 'blod',
+                  },
+                },
               },
               type: {
                 type: 'string',
@@ -50,11 +46,15 @@ export const schema: ISchema = {
                 enum: OPETATION_TPYE,
                 'x-decorator': 'FormItem',
                 'x-component': 'Select',
-                'x-component-props': {
-                  style: {
-                    width: 400,
-                  },
-                },
+                // 'x-reactions': {
+                  // target: ['.steps'],
+                  // fulfill: {
+                  //   run: 'console.info($self.value, $self.value === "type" ? "#/definitions/steps": "")',
+                  //   // schema: {
+                  //   //   $ref: '{{$self.value === "type" ? "#/definitions/steps": ""}}',
+                  //   // },
+                  // },
+                // },
               },
               url: {
                 type: 'string',
@@ -62,11 +62,6 @@ export const schema: ISchema = {
                 required: true,
                 'x-decorator': 'FormItem',
                 'x-component': 'Input',
-                'x-component-props': {
-                  style: {
-                    width: 400,
-                  },
-                },
                 'x-reactions': {
                   dependencies: ['.type'],
                   fulfill: {
@@ -78,15 +73,10 @@ export const schema: ISchema = {
               },
               selector: {
                 type: 'string',
-                title: '选择器',
+                title: '选择器 ',
                 required: true,
                 'x-decorator': 'FormItem',
                 'x-component': 'Input',
-                'x-component-props': {
-                  style: {
-                    width: 400,
-                  },
-                },
                 'x-reactions': {
                   dependencies: ['.type'],
                   fulfill: {
@@ -102,11 +92,6 @@ export const schema: ISchema = {
                 required: true,
                 'x-decorator': 'FormItem',
                 'x-component': 'Input',
-                'x-component-props': {
-                  style: {
-                    width: 400,
-                  },
-                },
                 'x-reactions': {
                   dependencies: ['.type'],
                   fulfill: {
@@ -133,6 +118,22 @@ export const schema: ISchema = {
         },
       },
     },
+  },
+  type: 'object',
+  properties: {
+    id: {
+      type: 'string',
+      title: '流程ID',
+      required: false,
+      'x-disabled': true,
+      'x-decorator': 'FormItem',
+      'x-component': 'Input',
+      'x-component-props': {
+        style: {
+          width: 400,
+        },
+      },
+    },
     name: {
       type: 'string',
       title: '流程名称',
@@ -144,6 +145,9 @@ export const schema: ISchema = {
           width: 400,
         },
       },
+    },
+    steps: {
+      $ref: '#/definitions/steps',
     },
   },
 };
