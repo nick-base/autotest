@@ -4,15 +4,27 @@ import { OPETATION_TPYE } from './data';
 export const schema: ISchema = {
   definitions: {
     steps: {
-      definitions: 'steps',
       type: 'array',
       required: true,
       title: '步骤',
       'x-decorator': 'FormItem',
       'x-component': 'ArrayItems',
+      'x-decorator-props': {
+        style: {
+          height: '65vh',
+          overflow: 'auto',
+          background: '#eee',
+        },
+      },
       items: {
         type: 'object',
         'x-component': 'ArrayItems.Item',
+        'x-component-props': {
+          style: {
+            border: '1px solid #999',
+            paddingBottom: '10px',
+          },
+        },
         properties: {
           sort: {
             type: 'void',
@@ -92,9 +104,9 @@ export const schema: ISchema = {
                   },
                 },
               },
-              requestUrl: {
+              requestUrlRegExp: {
                 type: 'string',
-                title: '请求地址',
+                title: '地址正则',
                 required: true,
                 'x-decorator': 'FormItem',
                 'x-component': 'Input',

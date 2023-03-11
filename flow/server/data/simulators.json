@@ -15,13 +15,17 @@
         "typeData": "18317857608"
       },
       {
+        "type": "waitForResponse",
+        "requestUrlRegExp": "/api/whale/v1/H5/gift/message/v2/sendSmsCode"
+      },
+      {
         "type": "type",
         "typeData": "8888",
         "selector": "div[data-ilog=\"投保人验证码\"] input"
       }
     ],
     "name": "魔方2022",
-    "id": "8e829ff8-b971-410a-8fca-7b7bf18a6df7"
+    "id": "e0335741-bf44-4c8b-b469-a29c887489c0"
   },
   {
     "steps": [
@@ -40,7 +44,7 @@
       },
       {
         "type": "waitForResponse",
-        "requestUrl": "https://ihealth-test.zhongan.com/api/whale/v1/H5/gift/message/v2/sendSmsCode"
+        "requestUrlRegExp": "/api/whale/v1/H5/gift/message/v2/sendSmsCode"
       },
       {
         "type": "type",
@@ -48,21 +52,7 @@
         "selector": "div[data-ilog=\"投保人验证码\"] input"
       }
     ],
-    "name": "魔方2022",
-    "id": "e0335741-bf44-4c8b-b469-a29c887489c0"
-  },
-  {
-    "steps": [
-      {
-        "type": "goto",
-        "url": "https://i-test.zhongan.com/d7YPjO"
-      },
-      {
-        "type": "click",
-        "selector": "div[data-ilog=\"投保人手机号\"] input"
-      }
-    ],
-    "name": "魔方2022-1",
-    "id": "2c422458-f6ef-4cdf-a9a6-cf3479f742d5"
+    "name": "魔方2022-01",
+    "id": "f269e197-c9f2-4f41-8477-879b8ed4ffa5"
   }
 ]

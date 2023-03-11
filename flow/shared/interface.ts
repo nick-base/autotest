@@ -11,7 +11,7 @@ export interface Step {
   url?: string;
   selector?: string;
   typeData?: string;
-  requestUrl?: string;
+  requestUrlRegExp?: string;
 }
 
 export interface Simulator {

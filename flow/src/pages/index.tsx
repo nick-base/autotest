@@ -10,7 +10,7 @@ const IndexPage = ({ data: propsData = {} }) => {
   const [url, setUrl] = useState<string>(DEFAULT_URL);
 
   useEffect(() => {
-    ref.current.onload =() => {
+    ref.current.onload = () => {
       console.log('document', document.getElementById('iframe-1')?.contentDocument);
     };
   }, []);

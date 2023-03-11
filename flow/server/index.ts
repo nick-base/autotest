@@ -22,7 +22,11 @@ puppeteer.defaultArgs({
     '--no-default-browser-check',
     '--enable-automation',
     '--disable-throttle-non-visible-cross-origin-iframes',
+    '--start-maximized',
+    '--window-position=0,0',
   ],
+  devtools: true,
+  headless: false,
 });
 
 const UA = {
@@ -37,21 +41,35 @@ app.prepare().then(() => {
     const server = new Koa();
     const router = require('./modules/routers').default;
 
+    server
+      .use(router.routes())
+      .use(router.allowedMethods())
+      .use(async (ctx: Koa.Context, next: () => Promise<any>) => {
+        // ctx.res.statusCode = 200;
+        await next();
+      });
+
     let browser: Browser;
     let page: Page;
+    let newBrower = true;
 
     const boot = async () => {
-      if (!browser) {
+      if (!browser || !browser.isConnected()) {
         browser = await puppeteer.launch({
           ignoreHTTPSErrors: true,
           headless: false,
+          defaultViewport: null,
+          devtools: true,
+          dumpio: true,
         });
         browser.on('disconnected', () => {
-          console.info('browser::disconnected');
           browser && browser.close();
           page = null;
           browser = null;
         });
+        newBrower = true;
+      } else {
+        newBrower = false;
       }
     };
 
@@ -59,27 +77,25 @@ app.prepare().then(() => {
       if (!page) {
         const pages = await browser.pages();
         if (pages.length) {
-          for await (const p of pages) {
-            if (p.url() === serverAddress) {
-              page = p;
-              break;
+          if (newBrower) {
+            page = pages[0];
+          } else {
+            for await (const p of pages) {
+              if (p.url() === serverAddress) {
+                page = p;
+                break;
+              }
             }
           }
-          if (!page) page = pages[0];
         }
 
         if (!page) {
           page = await browser.newPage();
         }
         await page.setUserAgent(UA.iphone);
-        await page.setViewport({
-          width: 1200,
-          height: 1000,
-          deviceScaleFactor: 2,
-        });
-
-        if (page.url() !== serverAddress) await page.goto(serverAddress);
       }
+      if (page.url() !== serverAddress) await page.goto(serverAddress);
+
       return page;
     };
 
@@ -90,19 +106,12 @@ app.prepare().then(() => {
 
     router.post('/api/simulator/execute', koaBody(), async (ctx) => {
       await boot();
-      await execute(ctx, { browser, openServerPage });
+      await execute(ctx, { browser, openServerPage, newBrower });
     });
 
     router.all('(.*)', async (ctx: Koa.Context) => {
       await handle(ctx.req, ctx.res);
       ctx.respond = false;
-    });
-
-    server.use(router.routes());
-
-    server.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
-      ctx.res.statusCode = 200;
-      await next();
     });
 
     process.on('SIGUSR2', function () {

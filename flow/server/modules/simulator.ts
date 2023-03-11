@@ -1,18 +1,37 @@
-import puppeteer, { Browser, Page, Frame, KnownDevices } from 'puppeteer';
+import puppeteer, { Browser, Page, Frame, KnownDevices, HTTPResponse } from 'puppeteer';
 
 import { Simulator, Operation } from '../../shared/interface';
 
 const TIMEOUT = 3 * 1000;
+const sleep = (time: number = TIMEOUT) => new Promise((resolve) => setTimeout(resolve, time));
+
 const UA = {
   iphone:
     'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
 };
 
+const interceptionResponse = async (page) => {
+  const list = [];
+  page.on('response', async (response: HTTPResponse) => {
+    const request = response.request();
+    if (['xhr', 'fetch'].includes(request.resourceType())) {
+      const data = await response.text();
+      list.push({
+        url: request.url(),
+        status: response.status(),
+        data,
+      });
+    }
+  });
+  return list;
+};
+
 export const execute = async (
   ctx,
-  { browser, openServerPage }: { browser: Browser; openServerPage: () => Promise<Page> }
+  { browser, openServerPage, newBrower }: { browser: Browser; newBrower: boolean; openServerPage: () => Promise<Page> }
 ) => {
   const result = {
+    cookies: null,
     error: null,
     steps: [],
   };
@@ -27,20 +46,21 @@ export const execute = async (
 
     main = await page.frames().find((frame) => frame.name() === 'iframe-1');
   } else {
-    page = main = await browser.newPage();
+    const pages = await browser.pages();
+    page = main = newBrower && pages.length ? pages[0] : await browser.newPage();
     await main.emulate(KnownDevices['iPhone 6']);
   }
+  let list = interceptionResponse(page);
 
   for await (const item of steps) {
     try {
       const startTime = Date.now();
-      const data: any = { ...item };
+      const itemData: any = { ...item };
 
       const { type } = item;
       if (type === Operation.GOTO) {
         const { url } = item;
         await main.goto(url, { waitUntil: 'domcontentloaded' });
-        continue;
       }
 
       if (type === Operation.Focus) {
@@ -48,33 +68,33 @@ export const execute = async (
         // @ts-ignore
         await main.waitForSelector(selector, { timeout: TIMEOUT });
         await main.$eval(selector, (elem) => (elem as any).focus());
-        continue;
       }
 
       if (type === Operation.Click) {
         const { selector } = item;
         await main.waitForSelector(selector, { timeout: TIMEOUT });
         await main.$eval(selector, (elem) => (elem as any).click());
-        continue;
       }
 
       if (type === Operation.Type) {
         const { selector, typeData } = item;
         await main.waitForSelector(selector, { timeout: TIMEOUT });
         await main.type(selector, typeData, { delay: 100 });
-        continue;
       }
 
       if (type === Operation.WaitForResponse) {
-        const { requestUrl } = item;
-        const response = await page.waitForResponse(requestUrl);
-        data.response = response && response.json();
-        continue;
+        const { requestUrlRegExp } = item;
+        if (testMode) {
+          // iframe不支持waitForResponse
+          await sleep();
+        } else {
+          await page.waitForResponse((response) => new RegExp(requestUrlRegExp).test(response.url()));
+        }
       }
 
       const endTime = Date.now();
       result.steps.push({
-        ...data,
+        ...itemData,
         startTime,
         endTime,
       });
@@ -83,6 +103,8 @@ export const execute = async (
       break;
     }
   }
+
+  result.cookies = await page.cookies();
 
   ctx.body = {
     code: '0',

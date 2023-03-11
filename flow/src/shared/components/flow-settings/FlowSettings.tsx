@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Card, Spin, Button, Select as AntdSelect, message } from 'antd';
-import { createForm, onFormInputChange, onFormInitialValuesChange } from '@formily/core';
+import { createForm, onFormInputChange, onFormValuesChange, onFormInitialValuesChange } from '@formily/core';
 import { createSchemaField } from '@formily/react';
 import {
   Form,
@@ -88,48 +88,52 @@ const FLowSettings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues === null]);
 
-  const execute = (testMode = false) => {
-    const data = {
-      ...form.values,
-      testMode,
-    };
-    fetch('/api/simulator/execute', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        const { status } = res;
-        if (status === 404) {
-          message.error('纯净模式不支持该操作！');
-        }
+  const execute = async (testMode = false) => {
+    form.validate().then(() => {
+      const data = {
+        ...form.values,
+        testMode,
+      };
+      fetch('/api/simulator/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       })
-      .catch((res) => {
-        message.error(res);
-      });
+        .then((res) => {
+          const { status } = res;
+          if (status === 404) {
+            message.error('纯净模式不支持该操作！');
+          }
+        })
+        .catch((res) => {
+          message.error(res);
+        });
+    });
   };
 
   const save = (add = false) => {
-    const data = { ...form.values };
-    if (add) {
-      delete data.id;
-    }
-    fetch('/api/simulator/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        form.setInitialValues(response.data);
-        setCurrent(response.data);
-        setSelectId(response.data.id);
-        updateList();
-      });
+    form.validate().then(() => {
+      const data = { ...form.values };
+      if (add) {
+        delete data.id;
+      }
+      fetch('/api/simulator/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          form.setValues(response.data);
+          setCurrent(response.data);
+          setSelectId(response.data.id);
+          updateList();
+        });
+    });
   };
 
   const apply = () => {
@@ -137,9 +141,10 @@ const FLowSettings = () => {
     const item = list.find((item) => item.id === selectId);
 
     if (!item) return;
-    form.setInitialValues(item || {});
-    setCurrent(item || {});
-    setSelectId(item.id);
+    const data = JSON.parse(JSON.stringify(item));
+    form.setValues(data);
+    setCurrent(data);
+    setSelectId(data.id);
   };
 
   const title = (
@@ -150,7 +155,7 @@ const FLowSettings = () => {
         onClear={() => {
           const data = { ...(form.values || {}) };
           delete data.id;
-          form.setInitialValues(data);
+          form.setValues(data);
           setCurrent(data);
         }}
         value={selectId}
