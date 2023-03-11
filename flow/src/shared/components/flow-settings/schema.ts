@@ -46,15 +46,6 @@ export const schema: ISchema = {
                 enum: OPETATION_TPYE,
                 'x-decorator': 'FormItem',
                 'x-component': 'Select',
-                // 'x-reactions': {
-                  // target: ['.steps'],
-                  // fulfill: {
-                  //   run: 'console.info($self.value, $self.value === "type" ? "#/definitions/steps": "")',
-                  //   // schema: {
-                  //   //   $ref: '{{$self.value === "type" ? "#/definitions/steps": ""}}',
-                  //   // },
-                  // },
-                // },
               },
               url: {
                 type: 'string',
@@ -97,6 +88,21 @@ export const schema: ISchema = {
                   fulfill: {
                     state: {
                       visible: '{{["type"].includes($deps[0])}}',
+                    },
+                  },
+                },
+              },
+              requestUrl: {
+                type: 'string',
+                title: '请求地址',
+                required: true,
+                'x-decorator': 'FormItem',
+                'x-component': 'Input',
+                'x-reactions': {
+                  dependencies: ['.type'],
+                  fulfill: {
+                    state: {
+                      visible: '{{["waitForResponse"].includes($deps[0])}}',
                     },
                   },
                 },

@@ -17,4 +17,8 @@ export const OPETATION_TPYE = [
     label: '文本输入',
     value: Operation.Type,
   },
+  {
+    label: '等待请求响应',
+    value: Operation.WaitForResponse,
+  },
 ];

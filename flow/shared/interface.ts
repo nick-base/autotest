@@ -3,6 +3,7 @@ export enum Operation {
   Click = 'click',
   Focus = 'focus',
   Type = 'type',
+  WaitForResponse = 'waitForResponse',
 }
 
 export interface Step {
@@ -10,8 +11,10 @@ export interface Step {
   url?: string;
   selector?: string;
   typeData?: string;
+  requestUrl?: string;
 }
 
 export interface Simulator {
+  testMode: boolean;
   steps: Step[];
 }

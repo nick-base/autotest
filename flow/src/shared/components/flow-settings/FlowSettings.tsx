@@ -88,13 +88,17 @@ const FLowSettings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues === null]);
 
-  const execute = () => {
+  const execute = (testMode = false) => {
+    const data = {
+      ...form.values,
+      testMode,
+    };
     fetch('/api/simulator/execute', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(form.values),
+      body: JSON.stringify(data),
     })
       .then((res) => {
         const { status } = res;
@@ -179,17 +183,23 @@ const FLowSettings = () => {
               <Submit block size="large" onClick={() => save(true)}>
                 另存为
               </Submit>
+              |
               <Submit block size="large" onClick={() => save(false)}>
                 保存
               </Submit>
-              <Submit block size="large" onClick={execute}>
+              |
+              <Submit block size="large" onClick={() => execute(true)}>
+                测试
+              </Submit>
+              |
+              <Submit block size="large" onClick={() => execute(false)}>
                 执行
               </Submit>
-              {current?.id && (
+              {/* {current?.id && (
                 <Submit danger block size="large" onClick={() => {}}>
                   删除
                 </Submit>
-              )}
+              )} */}
             </FormButtonGroup.FormItem>
           </Form>
         </Spin>
