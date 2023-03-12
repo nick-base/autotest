@@ -30,6 +30,9 @@
   {
     "steps": [
       {
+        "type": "start"
+      },
+      {
         "type": "goto",
         "url": "https://i-test.zhongan.com/d7YPjO"
       },
@@ -50,6 +53,9 @@
         "type": "type",
         "typeData": "8888",
         "selector": "div[data-ilog=\"投保人验证码\"] input"
+      },
+      {
+        "type": "end"
       }
     ],
     "name": "魔方2022-01",

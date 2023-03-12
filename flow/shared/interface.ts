@@ -1,4 +1,6 @@
 export enum Operation {
+  Start = 'start',
+  End = 'end',
   GOTO = 'goto',
   Click = 'click',
   Focus = 'focus',

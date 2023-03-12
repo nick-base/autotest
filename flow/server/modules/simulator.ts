@@ -58,7 +58,14 @@ export const execute = async (
   }
   let list = interceptionResponse(page);
 
-  for await (const item of steps) {
+  let stepList = steps;
+  if (search) {
+    const startIndex = steps.findIndex((step) => step.type === Operation.Start);
+    const endIndex = steps.findIndex((step) => step.type === Operation.End);
+    stepList = steps.slice(startIndex === -1 ? 0 : startIndex, endIndex === -1 ? steps.length : endIndex + 1);
+  }
+
+  for await (const item of stepList) {
     try {
       const startTime = Date.now();
       const itemData: any = { ...item };
@@ -106,12 +113,13 @@ export const execute = async (
               nodeName: ilogNode.nodeName,
               ilog: ilogNode.getAttribute('data-ilog'),
               hasInputNode: !!inputNode,
+              cls: `.${[...ilogNode.classList].join('.')}`,
             };
           });
         });
 
-        nodes.forEach(({ nodeName, ilog, hasInputNode }) => {
-          const nodeSelector = `${nodeName.toLowerCase()}[data-ilog=${ilog}]`;
+        nodes.forEach(({ nodeName, ilog, hasInputNode, cls }) => {
+          const nodeSelector = `${nodeName.toLowerCase()}${cls}[data-ilog=${ilog}]`;
           const nodeInputSelector = `${nodeSelector} input`;
           if (!searchData.includes(nodeSelector)) {
             searchData.push(nodeSelector);

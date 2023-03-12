@@ -36,8 +36,8 @@ export const schema: ISchema = {
             'x-component': 'FormLayout',
             'x-component-props': {
               layout: 'horizontal',
-              labelWidth: 100,
               wrapperWidth: 400,
+              labelWidth: 100,
               labelAlign: 'left',
             },
             properties: {

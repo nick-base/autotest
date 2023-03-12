@@ -70,6 +70,10 @@ const tabList = [
     key: 'tab2',
     tab: '关键节点',
   },
+  {
+    key: 'tab3',
+    tab: '执行结论',
+  }
 ];
 
 const FLowSettings = () => {
@@ -81,6 +85,7 @@ const FLowSettings = () => {
   const [current, setCurrent] = useState({ id: null });
   const [loading, setLoading] = useState<{ search?: boolean }>({});
   const [activeTabKey, setActiveTabKey] = useState<string>('tab1');
+  const [executeResult, setExecuteResult] = useState<any>({});
 
   const displayList = useMemo(() => {
     return list.map((item) => ({
@@ -108,13 +113,11 @@ const FLowSettings = () => {
   }, [formValues === null]);
 
   const execute = async ({ testMode, search }: { testMode?: boolean; search?: boolean }) => {
-    if (search) {
-      setLoading((pre) => ({ ...pre, search: true }));
-    }
-
     form
       .validate()
       .then(() => {
+        search && setLoading((pre) => ({ ...pre, search: true }));
+
         const data = {
           ...form.values,
           testMode,
@@ -132,10 +135,15 @@ const FLowSettings = () => {
             if (status === 404) {
               message.error('纯净模式不支持该操作！');
             }
+            const { result = {} } = await res.json();
+            setExecuteResult(result);
+
             if (search) {
-              const { result = {} } = await res.json();
               const { searchData = [] } = result;
               dispatch(setCacheNodeList(searchData));
+              setActiveTabKey('tab2');
+            } else {
+              setActiveTabKey('tab3');
             }
           })
           .catch((res) => {
@@ -265,30 +273,48 @@ const FLowSettings = () => {
       </Spin>
     ),
     tab2: (
-      <div style={{ lineHeight: '35px', height: '75vh', overflow: 'auto' }}>
-        {nodeList &&
-          nodeList.map((nodeItem, index) => {
-            const id = `${nodeItem}-${index}`;
-            return (
-              <div key={index} style={{ display: 'flex' }}>
-                <div style={{ marginRight: 20 }}>
-                  <Button
-                    onClick={() => {
-                      window.getSelection().selectAllChildren(document.getElementById(id));
-                      document.execCommand('copy');
-                      window.getSelection().removeAllRanges();
-                      message.success(`复制成功 ${nodeItem}`);
-                    }}
-                    type="primary"
-                    size="small">
-                    复制
-                  </Button>
+      <div>
+        <div>
+          <Button
+            onClick={() => {
+              dispatch(setCacheNodeList([]));
+            }}>
+            清除缓存
+          </Button>
+        </div>
+        <div style={{ lineHeight: '35px', height: '75vh', overflow: 'auto', marginTop: 20 }}>
+          {nodeList &&
+            nodeList.map((nodeItem, index) => {
+              const id = `${nodeItem}-${index}`;
+              return (
+                <div key={index} style={{ display: 'flex' }}>
+                  <div style={{ marginRight: 20 }}>
+                    <Button
+                      onClick={() => {
+                        window.getSelection().selectAllChildren(document.getElementById(id));
+                        document.execCommand('copy');
+                        window.getSelection().removeAllRanges();
+                        message.success(`复制成功 ${nodeItem}`);
+                      }}
+                      type="primary"
+                      size="small">
+                      复制
+                    </Button>
+                  </div>
+                  <div id={id}>{nodeItem}</div>
                 </div>
-                <div id={id}>{nodeItem}</div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
+    ),
+    tab3: (
+      <div
+        style={{ whiteSpace: 'pre' }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(executeResult, null, 2),
+        }}
+      />
     ),
   };
 
