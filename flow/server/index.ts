@@ -111,7 +111,7 @@ app.prepare().then(() => {
       if (data.search) {
         targetBrowser = await puppeteer.launch({
           ignoreHTTPSErrors: true,
-          headless: false,
+          headless: true,
           defaultViewport: null,
           devtools: true,
           dumpio: true,

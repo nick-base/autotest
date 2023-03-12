@@ -5,4 +5,5 @@ export interface GlobalState {
     showDetail: boolean;
   };
   formValues: any;
+  cacheNodeList: any[];
 }

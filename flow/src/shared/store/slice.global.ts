@@ -9,6 +9,7 @@ const initialState: GlobalState = {
     showDetail: false,
   },
   formValues: null,
+  cacheNodeList: [],
 };
 
 const name = 'global';
@@ -31,6 +32,9 @@ export const slice = createSlice({
     setFormValues: (state, action: PayloadAction<any>) => {
       state.formValues = action.payload;
     },
+    setCacheNodeList: (state, action: PayloadAction<any>) => {
+      state.cacheNodeList = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -51,6 +55,8 @@ export const showDetailSelecter = (state: AppState) => state.global.members.show
 
 export const formValuesSelecter = (state: AppState) => state.global.formValues;
 
+export const cacheNodeListSelecter = (state: AppState) => state.global.cacheNodeList;
+
 export const incrementIfOdd =
   (amount: number): AppThunk =>
   (dispatch, getState) => {
@@ -60,6 +66,6 @@ export const incrementIfOdd =
     }
   };
 
-export const { increment, setShowDetail, setFormValues } = slice.actions;
+export const { increment, setShowDetail, setFormValues, setCacheNodeList } = slice.actions;
 
 export default slice.reducer;

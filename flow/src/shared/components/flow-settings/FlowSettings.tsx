@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Card, Spin, Button, Select as AntdSelect, message } from 'antd';
+import { Card, Spin, Button, Select as AntdSelect, message, Divider } from 'antd';
 import { createForm, onFormInputChange, onFormValuesChange, onFormInitialValuesChange } from '@formily/core';
 import { createSchemaField } from '@formily/react';
 import {
@@ -18,7 +18,12 @@ import {
   Editable,
   FormButtonGroup,
 } from '@/components/formily-antd';
-import { formValuesSelecter, setFormValues } from '@/shared/store/slice.global';
+import {
+  formValuesSelecter,
+  setFormValues,
+  cacheNodeListSelecter,
+  setCacheNodeList,
+} from '@/shared/store/slice.global';
 import { useAppSelector, useAppDispatch } from '@/shared/store';
 import { schema } from './schema';
 
@@ -56,12 +61,26 @@ const useList = () => {
   return { list, updateList };
 };
 
+const tabList = [
+  {
+    key: 'tab1',
+    tab: '配置',
+  },
+  {
+    key: 'tab2',
+    tab: '关键节点',
+  },
+];
+
 const FLowSettings = () => {
   const formValues = useAppSelector(formValuesSelecter);
+  const nodeList = useAppSelector(cacheNodeListSelecter);
   const dispatch = useAppDispatch();
   const { list, updateList } = useList();
   const [selectId, setSelectId] = useState('');
   const [current, setCurrent] = useState({ id: null });
+  const [loading, setLoading] = useState<{ search?: boolean }>({});
+  const [activeTabKey, setActiveTabKey] = useState<string>('tab1');
 
   const displayList = useMemo(() => {
     return list.map((item) => ({
@@ -88,30 +107,44 @@ const FLowSettings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues === null]);
 
-  const execute = async ({ testMode, search }: { testMode?: boolean; search: boolean }) => {
-    form.validate().then(() => {
-      const data = {
-        ...form.values,
-        testMode,
-        search,
-      };
-      fetch('/api/simulator/execute', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((res) => {
-          const { status } = res;
-          if (status === 404) {
-            message.error('纯净模式不支持该操作！');
-          }
+  const execute = async ({ testMode, search }: { testMode?: boolean; search?: boolean }) => {
+    if (search) {
+      setLoading((pre) => ({ ...pre, search: true }));
+    }
+
+    form
+      .validate()
+      .then(() => {
+        const data = {
+          ...form.values,
+          testMode,
+          search,
+        };
+        fetch('/api/simulator/execute', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         })
-        .catch((res) => {
-          message.error(res);
-        });
-    });
+          .then(async (res) => {
+            const { status } = res;
+            if (status === 404) {
+              message.error('纯净模式不支持该操作！');
+            }
+            if (search) {
+              const { result = {} } = await res.json();
+              const { searchData = [] } = result;
+              dispatch(setCacheNodeList(searchData));
+            }
+          })
+          .catch((res) => {
+            message.error(res);
+          });
+      })
+      .finally(() => {
+        setLoading((pre) => ({ ...pre, search: false }));
+      });
   };
 
   const save = (add = false) => {
@@ -150,7 +183,6 @@ const FLowSettings = () => {
 
   const title = (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <div>配置</div>
       <AntdSelect
         onChange={(id) => setSelectId(id)}
         onClear={() => {
@@ -175,44 +207,106 @@ const FLowSettings = () => {
     </div>
   );
 
+  const contentList: Record<string, React.ReactNode> = {
+    tab1: (
+      <Spin spinning={false}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 25 }}>
+          <AntdSelect
+            onChange={(id) => setSelectId(id)}
+            onClear={() => {
+              const data = { ...(form.values || {}) };
+              delete data.id;
+              form.setValues(data);
+              setCurrent(data);
+            }}
+            value={selectId}
+            showSearch
+            allowClear
+            style={{ width: '200px', margin: '0 20px' }}
+            placeholder="配置搜素"
+            optionFilterProp="children"
+            filterOption={(input, option) => (option?.label ?? '').includes(input)}
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+            }
+            options={displayList}
+          />
+          <Button onClick={apply}>应用</Button>
+        </div>
+        <Form form={form} labelCol={5} wrapperCol={16} onAutoSubmit={console.log}>
+          <SchemaField schema={schema} />
+          <FormButtonGroup.FormItem>
+            <Submit block size="large" onClick={() => save(true)}>
+              另存为
+            </Submit>
+            |
+            <Submit block size="large" onClick={() => save(false)}>
+              保存
+            </Submit>
+            |
+            <Submit loading={loading.search} block size="large" onClick={() => execute({ search: true })}>
+              节点查找
+            </Submit>
+            |
+            <Submit block size="large" onClick={() => execute({ testMode: true })}>
+              测试
+            </Submit>
+            |
+            <Submit block size="large" onClick={() => execute({ testMode: false })}>
+              执行
+            </Submit>
+            {/* {current?.id && (
+              <Submit danger block size="large" onClick={() => {}}>
+                删除
+              </Submit>
+            )} */}
+          </FormButtonGroup.FormItem>
+        </Form>
+      </Spin>
+    ),
+    tab2: (
+      <div style={{ lineHeight: '35px', height: '75vh', overflow: 'auto' }}>
+        {nodeList &&
+          nodeList.map((nodeItem, index) => {
+            const id = `${nodeItem}-${index}`;
+            return (
+              <div key={index} style={{ display: 'flex' }}>
+                <div style={{ marginRight: 20 }}>
+                  <Button
+                    onClick={() => {
+                      window.getSelection().selectAllChildren(document.getElementById(id));
+                      document.execCommand('copy');
+                      window.getSelection().removeAllRanges();
+                      message.success(`复制成功 ${nodeItem}`);
+                    }}
+                    type="primary"
+                    size="small">
+                    复制
+                  </Button>
+                </div>
+                <div id={id}>{nodeItem}</div>
+              </div>
+            );
+          })}
+      </div>
+    ),
+  };
+
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
       }}>
-      <Card title={title} style={{ width: '100%' }}>
-        <Spin spinning={false}>
-          <Form form={form} labelCol={5} wrapperCol={16} onAutoSubmit={console.log}>
-            <SchemaField schema={schema} />
-            <FormButtonGroup.FormItem>
-              <Submit block size="large" onClick={() => save(true)}>
-                另存为
-              </Submit>
-              |
-              <Submit block size="large" onClick={() => save(false)}>
-                保存
-              </Submit>
-              |
-              <Submit block size="large" onClick={() => execute({ search: true })}>
-                节点查找
-              </Submit>
-              |
-              <Submit block size="large" onClick={() => execute({ testMode: true })}>
-                测试
-              </Submit>
-              |
-              <Submit block size="large" onClick={() => execute({ testMode: false })}>
-                执行
-              </Submit>
-              {/* {current?.id && (
-                <Submit danger block size="large" onClick={() => {}}>
-                  删除
-                </Submit>
-              )} */}
-            </FormButtonGroup.FormItem>
-          </Form>
-        </Spin>
+      <Card
+        title={null}
+        tabList={tabList}
+        activeTabKey={activeTabKey}
+        onTabChange={(key) => {
+          setActiveTabKey(key);
+        }}
+        style={{ width: '100%' }}>
+        {contentList[activeTabKey]}
       </Card>
     </div>
   );

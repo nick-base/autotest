@@ -37,7 +37,7 @@ export const schema: ISchema = {
             'x-component-props': {
               layout: 'horizontal',
               labelWidth: 100,
-              wrapperWidth: 500,
+              wrapperWidth: 400,
               labelAlign: 'left',
             },
             properties: {

@@ -138,6 +138,11 @@ export const execute = async (
   result.cookies = await page.cookies();
   result.searchData = searchData;
 
+  if (search) {
+    browser && browser.close();
+    browser = null;
+  }
+
   ctx.body = {
     code: '0',
     result,
