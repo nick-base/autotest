@@ -1,5 +1,5 @@
 import { ISchema } from '@formily/json-schema';
-import { OPETATION_TPYE } from './data';
+import { OPETATION_TPYE, RELATION_LIST } from './data';
 
 export const schema: ISchema = {
   definitions: {
@@ -58,6 +58,9 @@ export const schema: ISchema = {
                 enum: OPETATION_TPYE,
                 'x-decorator': 'FormItem',
                 'x-component': 'Select',
+                'x-component-props': {
+                  showSearch: true,
+                },
               },
               url: {
                 type: 'string',
@@ -84,7 +87,7 @@ export const schema: ISchema = {
                   dependencies: ['.type'],
                   fulfill: {
                     state: {
-                      visible: '{{["click", "type", "focus"].includes($deps[0])}}',
+                      visible: '{{["click", "type", "focus", "typeName", "typeCertNo"].includes($deps[0])}}',
                     },
                   },
                 },
@@ -115,6 +118,22 @@ export const schema: ISchema = {
                   fulfill: {
                     state: {
                       visible: '{{["waitForResponse"].includes($deps[0])}}',
+                    },
+                  },
+                },
+              },
+              relation: {
+                type: 'string',
+                title: '家庭关系',
+                required: true,
+                enum: RELATION_LIST,
+                'x-decorator': 'FormItem',
+                'x-component': 'Select',
+                'x-reactions': {
+                  dependencies: ['.type'],
+                  fulfill: {
+                    state: {
+                      visible: '{{["typeName", "typeCertNo"].includes($deps[0])}}',
                     },
                   },
                 },

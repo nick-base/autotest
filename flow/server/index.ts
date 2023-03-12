@@ -26,7 +26,7 @@ puppeteer.defaultArgs({
     '--start-maximized',
     '--window-position=0,0',
   ],
-  devtools: true,
+  // devtools: true,
   headless: false,
 });
 
@@ -60,7 +60,7 @@ app.prepare().then(() => {
           ignoreHTTPSErrors: true,
           headless: false,
           defaultViewport: null,
-          devtools: true,
+          // devtools: true,
           dumpio: true,
         });
         browser.on('disconnected', () => {
@@ -113,7 +113,7 @@ app.prepare().then(() => {
           ignoreHTTPSErrors: true,
           headless: true,
           defaultViewport: null,
-          devtools: true,
+          // devtools: true,
           dumpio: true,
         });
       } else {

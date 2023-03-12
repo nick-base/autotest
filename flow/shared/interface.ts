@@ -5,6 +5,8 @@ export enum Operation {
   Click = 'click',
   Focus = 'focus',
   Type = 'type',
+  TypeName = 'typeName',
+  TypeCertNo = 'typeCertNo',
   WaitForResponse = 'waitForResponse',
 }
 
@@ -14,6 +16,7 @@ export interface Step {
   selector?: string;
   typeData?: string;
   requestUrlRegExp?: string;
+  relation: 'self' | 'spouse' | 'father' | 'mother' | 'son' | 'daughter';
 }
 
 export interface Simulator {

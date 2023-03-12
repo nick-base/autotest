@@ -1,5 +1,32 @@
 import { Operation } from 'shared/interface';
 
+export const RELATION_LIST = [
+  {
+    label: '本人',
+    value: 'self',
+  },
+  {
+    label: '配偶',
+    value: 'spouse',
+  },
+  {
+    label: '父亲',
+    value: 'father',
+  },
+  {
+    label: '母亲',
+    value: 'mother',
+  },
+  {
+    label: '儿子',
+    value: 'son',
+  },
+  {
+    label: '女儿',
+    value: 'daughter',
+  },
+];
+
 export const OPETATION_TPYE = [
   {
     label: '开始节点（忽略节点前操作）',
@@ -24,6 +51,14 @@ export const OPETATION_TPYE = [
   {
     label: '文本输入',
     value: Operation.Type,
+  },
+  {
+    label: '文本输入-姓名',
+    value: Operation.TypeName,
+  },
+  {
+    label: '文本输入-身份证号',
+    value: Operation.TypeCertNo,
   },
   {
     label: '等待请求响应',

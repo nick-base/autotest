@@ -30,9 +30,6 @@
   {
     "steps": [
       {
-        "type": "start"
-      },
-      {
         "type": "goto",
         "url": "https://i-test.zhongan.com/d7YPjO"
       },
@@ -43,7 +40,7 @@
       {
         "type": "type",
         "selector": "div[data-ilog=\"投保人手机号\"] input",
-        "typeData": "18317857608"
+        "typeData": "18317857618"
       },
       {
         "type": "waitForResponse",
@@ -55,10 +52,60 @@
         "selector": "div[data-ilog=\"投保人验证码\"] input"
       },
       {
-        "type": "end"
+        "type": "click",
+        "selector": "div.item-label[data-ilog=子女]"
+      },
+      {
+        "type": "typeName",
+        "selector": "div.za-cell[data-ilog=投保人本人姓名] input",
+        "relation": "self"
+      },
+      {
+        "type": "typeCertNo",
+        "selector": "div.za-cell[data-ilog=投保人身份证号] input",
+        "relation": "self"
+      },
+      {
+        "type": "typeName",
+        "relation": "son",
+        "selector": "div.za-cell[data-ilog=被保人子女姓名] input"
+      },
+      {
+        "type": "typeCertNo",
+        "selector": "div.za-cell[data-ilog=被保人身份证号] input",
+        "relation": "son"
+      },
+      {
+        "type": "click",
+        "selector": "div.item-label[data-ilog=自主续保-点击-不开通]"
+      },
+      {
+        "type": "start"
+      },
+      {
+        "type": "click",
+        "selector": "button.za-button.button.za-button--primary.za-button--md.za-button--round[data-ilog=底部-立即投保]"
+      },
+      {
+        "type": "click",
+        "selector": "div[data-ilog=可回溯弹窗-标准弹窗-同意]"
+      },
+      {
+        "type": "waitForResponse",
+        "requestUrlRegExp": "/uwOrder/"
       }
     ],
     "name": "魔方2022-01",
     "id": "f269e197-c9f2-4f41-8477-879b8ed4ffa5"
+  },
+  {
+    "steps": [
+      {
+        "type": "goto",
+        "url": "https://i-test.zhongan.com/d7YPjO"
+      }
+    ],
+    "name": "魔方2022-02",
+    "id": "436b4314-79f7-4bab-ab8c-fd98ef0f77f6"
   }
 ]
