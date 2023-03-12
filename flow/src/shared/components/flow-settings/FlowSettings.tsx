@@ -88,11 +88,12 @@ const FLowSettings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues === null]);
 
-  const execute = async (testMode = false) => {
+  const execute = async ({ testMode, search }: { testMode?: boolean; search: boolean }) => {
     form.validate().then(() => {
       const data = {
         ...form.values,
         testMode,
+        search,
       };
       fetch('/api/simulator/execute', {
         method: 'POST',
@@ -193,11 +194,15 @@ const FLowSettings = () => {
                 保存
               </Submit>
               |
-              <Submit block size="large" onClick={() => execute(true)}>
+              <Submit block size="large" onClick={() => execute({ search: true })}>
+                节点查找
+              </Submit>
+              |
+              <Submit block size="large" onClick={() => execute({ testMode: true })}>
                 测试
               </Submit>
               |
-              <Submit block size="large" onClick={() => execute(false)}>
+              <Submit block size="large" onClick={() => execute({ testMode: false })}>
                 执行
               </Submit>
               {/* {current?.id && (

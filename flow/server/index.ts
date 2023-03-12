@@ -5,6 +5,7 @@ import Koa from 'koa';
 import koaBody from 'koa-body';
 const detect = require('detect-port');
 import { execute } from './modules/simulator';
+import { Simulator } from '../shared/interface';
 
 loadEnvConfig(process.cwd());
 const dev = process.env.NODE_ENV !== 'production';
@@ -105,8 +106,21 @@ app.prepare().then(() => {
     }
 
     router.post('/api/simulator/execute', koaBody(), async (ctx) => {
-      await boot();
-      await execute(ctx, { browser, openServerPage, newBrower });
+      const data = ctx.request.body as Simulator;
+      let targetBrowser;
+      if (data.search) {
+        targetBrowser = await puppeteer.launch({
+          ignoreHTTPSErrors: true,
+          headless: false,
+          defaultViewport: null,
+          devtools: true,
+          dumpio: true,
+        });
+      } else {
+        await boot();
+        targetBrowser = browser;
+      }
+      await execute(ctx, { browser: targetBrowser, openServerPage, newBrower });
     });
 
     router.all('(.*)', async (ctx: Koa.Context) => {

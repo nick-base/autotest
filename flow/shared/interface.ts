@@ -16,5 +16,6 @@ export interface Step {
 
 export interface Simulator {
   testMode: boolean;
+  search: boolean;
   steps: Step[];
 }

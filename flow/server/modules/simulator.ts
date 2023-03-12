@@ -2,7 +2,7 @@ import puppeteer, { Browser, Page, Frame, KnownDevices, HTTPResponse } from 'pup
 
 import { Simulator, Operation } from '../../shared/interface';
 
-const TIMEOUT = 3 * 1000;
+const TIMEOUT = 10 * 1000;
 const sleep = (time: number = TIMEOUT) => new Promise((resolve) => setTimeout(resolve, time));
 
 const UA = {
@@ -31,17 +31,23 @@ export const execute = async (
   { browser, openServerPage, newBrower }: { browser: Browser; newBrower: boolean; openServerPage: () => Promise<Page> }
 ) => {
   const result = {
+    searchData: null,
     cookies: null,
     error: null,
     steps: [],
   };
 
   const data = ctx.request.body as Simulator;
-  const { steps = [], testMode } = data;
+  const { steps = [], testMode, search } = data;
   let main: Page | Frame;
   let page: Page;
+  let searchData = [];
+  let searchNode = '[data-ilog]';
 
-  if (testMode) {
+  if (search) {
+    page = main = await browser.newPage();
+    await main.emulate(KnownDevices['iPhone 6']);
+  } else if (testMode) {
     page = await openServerPage();
 
     main = await page.frames().find((frame) => frame.name() === 'iframe-1');
@@ -92,6 +98,30 @@ export const execute = async (
         }
       }
 
+      if (search) {
+        const nodes = await page.$$eval(searchNode, (ilogNodes) => {
+          return ilogNodes.map((ilogNode) => {
+            const inputNode = ilogNode.querySelector('input');
+            return {
+              nodeName: ilogNode.nodeName,
+              ilog: ilogNode.getAttribute('data-ilog'),
+              hasInputNode: !!inputNode,
+            };
+          });
+        });
+
+        nodes.forEach(({ nodeName, ilog, hasInputNode }) => {
+          const nodeSelector = `${nodeName.toLowerCase()}[data-ilog=${ilog}]`;
+          const nodeInputSelector = `${nodeSelector} input`;
+          if (!searchData.includes(nodeSelector)) {
+            searchData.push(nodeSelector);
+          }
+          if (hasInputNode && !searchData.includes(nodeInputSelector)) {
+            searchData.push(nodeInputSelector);
+          }
+        });
+      }
+
       const endTime = Date.now();
       result.steps.push({
         ...itemData,
@@ -99,12 +129,14 @@ export const execute = async (
         endTime,
       });
     } catch (error) {
+      console.error(error);
       result.error = error?.message;
       break;
     }
   }
 
   result.cookies = await page.cookies();
+  result.searchData = searchData;
 
   ctx.body = {
     code: '0',
