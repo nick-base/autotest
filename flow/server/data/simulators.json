@@ -76,11 +76,12 @@
         "relation": "son"
       },
       {
-        "type": "click",
-        "selector": "div.item-label[data-ilog=自主续保-点击-不开通]"
+        "type": "waitForResponse",
+        "requestUrlRegExp": "/api/whale/v1/insure/personal/quoteOrder/"
       },
       {
-        "type": "start"
+        "type": "click",
+        "selector": "div.item-label[data-ilog=自主续保-点击-不开通]"
       },
       {
         "type": "click",
@@ -89,10 +90,6 @@
       {
         "type": "click",
         "selector": "div[data-ilog=可回溯弹窗-标准弹窗-同意]"
-      },
-      {
-        "type": "waitForResponse",
-        "requestUrlRegExp": "/uwOrder/"
       }
     ],
     "name": "魔方2022-01",
